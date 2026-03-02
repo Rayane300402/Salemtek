@@ -1,6 +1,6 @@
 class Images {
   static const String basePath = 'assets/imgs/';
-  static const String introductionPath = 'introduction/';
+  static const String introductionPath = 'introduction';
   static const String registrationPath = 'registration/';
 
   // Introduction Images
@@ -40,10 +40,5 @@ class Images {
   static const String pillPage =
       '$basePath$introductionPath/pill_page.png';
 
-  // Registration Images
-  static const String google =
-      '$basePath$registrationPath/google.png';
 
-  static const String pills =
-      '$basePath$registrationPath/pills.png';
 }

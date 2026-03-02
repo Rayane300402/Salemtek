@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:salemtek/configs/theme/palette.dart';
+import 'package:salemtek/ui/pages/introduction/components/introduction_text.dart';
 
+import 'components/introduction_layout.dart';
 import 'data/introduction_data.dart';
 
 class IntroPage extends StatefulWidget {
@@ -22,11 +25,12 @@ class _IntroPageState extends State<IntroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212), // TODO: match your design
+      backgroundColor: Palette.primary,
       body: SafeArea(
+        top: false,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // === CONTENT AREA: PageView ===
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -35,60 +39,44 @@ class _IntroPageState extends State<IntroPage> {
                 itemBuilder: (context, i) {
                   final page = introData[i];
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 12),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-                        // === COMPONENT 1: HERO LAYOUT ===
-                        // Square grid background + floating medicine images (from page.images)
-                        // Optional Sign Up button (page.showBtn)
-                        // Expanded(
-                        //   flex: 7,
-                        //   // child: IntroHeroLayout(
-                        //   //   images: page.images,
-                        //   //   showBtn: page.showBtn,
-                        //   //   onBtnPressed: () {
-                        //   //     // TODO: Navigate to Sign Up screen
-                        //   //   },
-                        //   // ),
-                        // ),
+                      IntroductionLayout(
+                        pageIndex: i,
+                        images: page.images,
+                      ),
 
-                        const SizedBox(height: 18),
 
-                        // === COMPONENT 2: TEXT SECTION ===
-                        // Expanded(
-                        //   flex: 3,
-                        //   child: IntroTextSection(
-                        //     title: page.title,
-                        //     subtitle: page.subtitle,
-                        //   ),
-                        // ),
+                      const SizedBox(height: 30),
 
-                        const SizedBox(height: 10),
-                      ],
-                    ),
+                      // === COMPONENT 2: TEXT SECTION ===
+                      IntroductionText(title: page.title, subtitle: page.subtitle),
+
+                      // const SizedBox(height: 10),
+                    ],
                   );
                 },
               ),
             ),
 
             // === COMPONENT 3: PAGINATION ===
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 18, top: 6),
-            //   child: IntroPagination(
-            //     count: introData.length,
-            //     index: _index,
-            //     onTap: (i) {
-            //       _pageController.animateToPage(
-            //         i,
-            //         duration: const Duration(milliseconds: 280),
-            //         curve: Curves.easeOut,
-            //       );
-            //     },
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 18, top: 6),
+              child: Text('here'),
+              // child: IntroPagination(
+              //   count: introData.length,
+              //   index: _index,
+              //   onTap: (i) {
+              //     _pageController.animateToPage(
+              //       i,
+              //       duration: const Duration(milliseconds: 280),
+              //       curve: Curves.easeOut,
+              //     );
+              //   },
+              // ),
+            ),
           ],
         ),
       ),

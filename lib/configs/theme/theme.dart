@@ -2,33 +2,36 @@ import 'package:flutter/material.dart';
 import 'palette.dart';
 
 class AppTheme {
-  static ThemeData get theme => ThemeData(
-    useMaterial3: true,
-    fontFamily: 'Poppins',
+  static ThemeData get theme {
+    final base = ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(seedColor: Palette.primary),
+    );
 
-    // scaffold color unless stated otherwise
-    scaffoldBackgroundColor: Palette.surfaceApp,
-
-    // text unless stated otherwise
-    textTheme: ThemeData.light().textTheme.apply(
+    // Force Poppins onto *every* text style in the theme.
+    final poppinsTextTheme = base.textTheme.apply(
+      fontFamily: 'Poppins',
       bodyColor: Palette.text,
       displayColor: Palette.text,
-    ),
+    );
 
-    // ElevatedButton default style
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Palette.button,
-        foregroundColor: Palette.secondary, // text/icon color
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(999), // pill/capsule
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
-        textStyle: const TextStyle(
-          fontWeight: FontWeight.w600,
+    return base.copyWith(
+      scaffoldBackgroundColor: Palette.surfaceApp,
+      textTheme: poppinsTextTheme,
+      primaryTextTheme: poppinsTextTheme,
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Palette.button,
+          foregroundColor: Palette.secondary,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(999),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
