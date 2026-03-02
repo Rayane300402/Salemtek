@@ -16,18 +16,18 @@ final List<IntroductionEntity> introData = [
     showBtn: false,
   ),
   IntroductionEntity(
-    title: 'Your pocket med\ncabinet',
-    subtitle: 'Everything you take, neatly in one\nplace',
+    title: 'All your medication\nin one system',
+    subtitle: 'Log pills, creams, drips or powders.\nSee your progress over time.',
     images: [
-      Images.maskedCream,
+      Images.maskedCreamBottle,
       Images.maskedPill,
       Images.maskedCapsuleContainer
     ],
     showBtn: false,
   ),
   IntroductionEntity(
-    title: 'Your pocket med\ncabinet',
-    subtitle: 'Everything you take, neatly in one\nplace',
+    title: 'All your doses\nright on time',
+    subtitle: 'So relax and let us handle\nthe timing',
     images: [
       Images.maskedDrip,
       Images.maskedMedicine,

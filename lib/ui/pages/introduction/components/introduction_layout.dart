@@ -25,40 +25,33 @@ class IntroductionLayout extends StatelessWidget {
 
     final specs = _specsForPage(pageIndex);
 
-    return AspectRatio(
-      aspectRatio: _layoutAspect, //
-      child: Stack(
-        clipBehavior: Clip.hardEdge, // IMPORTANT: keep things inside while tuning
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                 left: BorderSide(
-                   width: 2,
-                   color: Palette.secondary
-                 ),
-                  right: BorderSide(
-                      width: 2,
-                      color: Palette.secondary
-                  ),
-                )
-              ),
-              child: Image.asset(
-                Images.introLayout,
-                fit: BoxFit.cover,           // ✅ fill the box cleanly
-                alignment: Alignment.topCenter,
-              ),
+    return Stack(
+      clipBehavior: Clip.hardEdge, // IMPORTANT: keep things inside while tuning
+      children: [
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+               bottom: BorderSide(
+                 width: 1,
+                 color: Palette.secondary
+               ),
+              )
+            ),
+            child: Image.asset(
+              Images.introLayout,
+              fit: BoxFit.cover,           // ✅ fill the box cleanly
+              alignment: Alignment.topCenter,
             ),
           ),
-          for (int i = 0; i < 3; i++)
-            _PlacedImage(
-              side: side,
-              asset: images[i],
-              spec: specs[i],
-            ),
-        ],
-      ),
+        ),
+        for (int i = 0; i < 3; i++)
+          _PlacedImage(
+            side: side,
+            asset: images[i],
+            spec: specs[i],
+          ),
+      ],
     );
   }
 }
@@ -138,15 +131,15 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
           alignment: Alignment.centerLeft,
           dx: 0.03,
           dy: -0.04,
-          w: 0.36,
-          rot: -0.25,
+          w: 0.45,
+          rot: 0,
         ),
         _ImageSpec(
           alignment: Alignment.bottomRight,
           dx: -0.02,
-          dy: 0.02,
+          dy: 0,
           w: 0.52,
-          rot: 0.55,
+          rot: 0,
         ),
       ];
 
@@ -157,23 +150,23 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
       return const [
         _ImageSpec(
           alignment: Alignment.topLeft,
-          dx: -0.02,
+          dx: 0.04,
           dy: 0.02,
-          w: 0.48,
+          w: 0.6,
           rot: 0.0,
         ),
         _ImageSpec(
           alignment: Alignment.topRight,
-          dx: 0.06,
-          dy: 0.18,
-          w: 0.40,
-          rot: 0.20,
+          dx: 0.18,
+          dy: 0.4,
+          w: 0.6,
+          rot: 0,
         ),
         _ImageSpec(
           alignment: Alignment.bottomLeft,
-          dx: 0.16,
-          dy: -0.08,
-          w: 0.60,
+          dx: -0.07,
+          dy: -0.1,
+          w: 0.7,
           rot: -0.35,
         ),
       ];
@@ -186,24 +179,24 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
       return const [
         _ImageSpec(
           alignment: Alignment.topRight,
-          dx: 0.12,
-          dy: -0.04,
+          dx: 0.25,
+          dy: -0.2,
           w: 0.72,
-          rot: 0.35,
+          rot: 0,
         ),
         _ImageSpec(
           alignment: Alignment.centerLeft,
-          dx: 0.08,
-          dy: 0.02,
-          w: 0.46,
+          dx: -0.25,
+          dy: -0.07,
+          w: 0.7,
           rot: 0.0,
         ),
         _ImageSpec(
           alignment: Alignment.bottomRight,
-          dx: 0.02,
-          dy: -0.02,
+          dx: -0.02,
+          dy: 0,
           w: 0.62,
-          rot: -0.25,
+          rot: -0.1,
         ),
       ];
   }

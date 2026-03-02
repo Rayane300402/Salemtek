@@ -12,30 +12,31 @@ class IntroductionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 30,
-              color: Palette.surfaceApp,
-              fontWeight: FontWeight.w700,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 30,
+            color: Palette.surfaceApp,
+            fontWeight: FontWeight.w700,
           ),
-          SizedBox(height: 10),
-          Text(
-              subtitle,
-            style: TextStyle(
-              fontSize: 16,
-              color: Palette.secondary,
-              fontWeight: FontWeight.w500,
-            ),
+        ),
+        SizedBox(height: 10),
+        Text(
+          subtitle,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 16,
+            color: Palette.secondary,
+            fontWeight: FontWeight.w500,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
