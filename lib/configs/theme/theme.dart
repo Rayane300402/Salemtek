@@ -32,6 +32,25 @@ class AppTheme {
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 22),
         ),
       ),
+
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: Palette.secondary,
+        indicatorColor: Colors.transparent,
+        height: 70,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(
+              size: 30,
+              color: Palette.navIcon,
+            );
+          }
+          return const IconThemeData(
+            size: 30,
+            color: Palette.primary,
+          );
+        }),
+      ),
     );
   }
 }
