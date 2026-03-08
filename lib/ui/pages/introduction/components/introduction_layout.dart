@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salemtek/configs/assets/images.dart';
 import 'package:salemtek/configs/theme/palette.dart';
 import 'package:salemtek/ui/components/custom_button.dart';
+import 'package:salemtek/ui/pages/main/main.dart';
 
 class IntroductionLayout extends StatelessWidget {
   final int pageIndex;
@@ -12,9 +13,11 @@ class IntroductionLayout extends StatelessWidget {
     super.key,
     required this.pageIndex,
     required this.images,
-    this.showBtn = false
-  }) : assert(images.length == 3, 'Each intro page must provide exactly 3 images.');
-
+    this.showBtn = false,
+  }) : assert(
+         images.length == 3,
+         'Each intro page must provide exactly 3 images.',
+       );
 
   static const double _layoutAspect = 0.81;
 
@@ -24,7 +27,7 @@ class IntroductionLayout extends StatelessWidget {
 
     // Controls how big the square is relative to screen width.
     // Tune this number until it matches your mock.
-    final side = size.width ;
+    final side = size.width;
 
     final specs = _specsForPage(pageIndex);
 
@@ -35,33 +38,31 @@ class IntroductionLayout extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               border: Border(
-               bottom: BorderSide(
-                 width: 1,
-                 color: Palette.secondary
-               ),
-              )
+                bottom: BorderSide(width: 1, color: Palette.secondary),
+              ),
             ),
             child: Image.asset(
               Images.introLayout,
-              fit: BoxFit.cover,           // ✅ fill the box cleanly
+              fit: BoxFit.cover, // ✅ fill the box cleanly
               alignment: Alignment.topCenter,
             ),
           ),
         ),
         for (int i = 0; i < 3; i++)
-          _PlacedImage(
-            side: side,
-            asset: images[i],
-            spec: specs[i],
+          _PlacedImage(side: side, asset: images[i], spec: specs[i]),
+        if (showBtn)
+          Align(
+            alignment: Alignment.center,
+            child: CustomButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const Main()),
+                );
+              },
+              title: 'Get Started',
+            ),
           ),
-        if(showBtn)
-        Align(
-          alignment: Alignment.center,
-          child: CustomButton(
-            onPressed: () {},
-            title: 'Get Started',
-          ),
-        )
       ],
     );
   }
@@ -108,11 +109,7 @@ class _PlacedImage extends StatelessWidget {
         offset: Offset(side * spec.dx, side * spec.dy),
         child: Transform.rotate(
           angle: spec.rot,
-          child: Image.asset(
-            asset,
-            width: width,
-            fit: BoxFit.contain,
-          ),
+          child: Image.asset(asset, width: width, fit: BoxFit.contain),
         ),
       ),
     );
@@ -126,9 +123,9 @@ class _PlacedImage extends StatelessWidget {
 /// 2 = "bottom" image
 List<_ImageSpec> _specsForPage(int pageIndex) {
   switch (pageIndex) {
-  // =========================
-  // PAGE 1 (pill bottle top-right, container left, cream bottom-right)
-  // =========================
+    // =========================
+    // PAGE 1 (pill bottle top-right, container left, cream bottom-right)
+    // =========================
     case 0:
       return const [
         _ImageSpec(
@@ -154,9 +151,9 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
         ),
       ];
 
-  // =========================
-  // PAGE 2 (cream top-left, pill top-right, container bottom-left)
-  // =========================
+    // =========================
+    // PAGE 2 (cream top-left, pill top-right, container bottom-left)
+    // =========================
     case 1:
       return const [
         _ImageSpec(
@@ -182,9 +179,9 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
         ),
       ];
 
-  // =========================
-  // PAGE 3 (drip top-right, medicine cluster left, bottle bottom-right)
-  // =========================
+    // =========================
+    // PAGE 3 (drip top-right, medicine cluster left, bottle bottom-right)
+    // =========================
     case 2:
     default:
       return const [
@@ -207,7 +204,7 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
           dx: -0.07,
           dy: 0.04,
           w: 0.62,
-          rot:0.2,
+          rot: 0.2,
         ),
       ];
   }
