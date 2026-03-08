@@ -28,8 +28,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(999),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 22),
         ),
       ),
     );

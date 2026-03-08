@@ -45,6 +45,7 @@ class _IntroPageState extends State<IntroPage> {
                   child: IntroductionLayout(
                     pageIndex: i,
                     images: page.images,
+                    showBtn: page.showBtn,
                   ),
                 ),
 

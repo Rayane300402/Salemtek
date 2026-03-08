@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:salemtek/configs/assets/images.dart';
 import 'package:salemtek/configs/theme/palette.dart';
+import 'package:salemtek/ui/components/custom_button.dart';
 
 class IntroductionLayout extends StatelessWidget {
   final int pageIndex;
   final List<String> images;
+  final bool showBtn;
 
   const IntroductionLayout({
     super.key,
     required this.pageIndex,
     required this.images,
+    this.showBtn = false
   }) : assert(images.length == 3, 'Each intro page must provide exactly 3 images.');
 
 
@@ -51,6 +54,14 @@ class IntroductionLayout extends StatelessWidget {
             asset: images[i],
             spec: specs[i],
           ),
+        if(showBtn)
+        Align(
+          alignment: Alignment.center,
+          child: CustomButton(
+            onPressed: () {},
+            title: 'Get Started',
+          ),
+        )
       ],
     );
   }
@@ -186,17 +197,17 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
         ),
         _ImageSpec(
           alignment: Alignment.centerLeft,
-          dx: -0.25,
+          dx: -0.45,
           dy: -0.07,
-          w: 0.7,
+          w: 0.9,
           rot: 0.0,
         ),
         _ImageSpec(
           alignment: Alignment.bottomRight,
-          dx: -0.02,
-          dy: 0,
+          dx: -0.07,
+          dy: 0.04,
           w: 0.62,
-          rot: -0.1,
+          rot:0.2,
         ),
       ];
   }
