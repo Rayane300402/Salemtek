@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salemtek/ui/components/custom_navigation_bar.dart';
 import 'package:salemtek/ui/pages/main/cabinet/cabinet.dart';
+import 'package:salemtek/ui/pages/main/home/components/calendar/bloc/calendar_load_cubit.dart';
 import 'package:salemtek/ui/pages/main/settings/settings.dart';
 import 'package:salemtek/ui/pages/main/statistics/statistics.dart';
-
-import '../../../configs/theme/palette.dart';
 import 'home/home.dart';
 
 class Main extends StatefulWidget {
@@ -32,9 +32,12 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: pages[currentIndex]),
-      bottomNavigationBar: CustomNavigationBar(currentIndex: currentIndex, onDestinationSelected: onDestinationSelected)
+    return BlocProvider(
+      create: (_) => CalendarDayCubit(),
+      child: Scaffold(
+        body: SafeArea(child: pages[currentIndex]),
+        bottomNavigationBar: CustomNavigationBar(currentIndex: currentIndex, onDestinationSelected: onDestinationSelected)
+      ),
     );
   }
 }

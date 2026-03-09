@@ -37,6 +37,11 @@ dependencies:
   flutter_svg: ^2.2.3
   dartz: ^0.10.1
   get_it: ^9.2.1
+  bloc: ^9.2.0
+  hydrated_bloc: ^10.1.1
+  flutter_bloc: ^9.1.1
+  intl: ^0.20.2
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

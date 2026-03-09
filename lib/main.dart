@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:salemtek/configs/theme/theme.dart';
 import 'package:salemtek/ui/pages/introduction/introductions.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final directory = await getApplicationDocumentsDirectory();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(directory.path),
+  );
+
   runApp(const MyApp());
 }
 
