@@ -68,6 +68,7 @@ flutter:
   assets:
     - assets/imgs/
     - assets/imgs/introduction/
+    - assets/imgs/pills/
     - assets/fonts/
 
 
