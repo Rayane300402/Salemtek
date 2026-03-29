@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:salemtek/configs/theme/theme.dart';
+import 'package:salemtek/ui/bloc/medicine/medicine_cubit.dart';
 import 'package:salemtek/ui/pages/introduction/introductions.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:salemtek/utils/service_locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +16,8 @@ Future<void> main() async {
     storageDirectory: HydratedStorageDirectory(directory.path),
   );
 
+  await initServiceLocator();
+
   runApp(const MyApp());
 }
 
@@ -22,10 +27,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-     debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme,
-      home: IntroPage(),
+    return BlocProvider(
+      create: (_) => sl<MedicineCubit>()..load(),
+      child: MaterialApp(
+       debugShowCheckedModeBanner: false,
+        theme: AppTheme.theme,
+        home: IntroPage(),
+      ),
     );
   }
 }

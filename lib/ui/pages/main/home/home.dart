@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salemtek/ui/pages/main/home/components/calendar/calendar.dart';
 
 import '../../../../configs/theme/palette.dart';
+import '../../../bloc/medicine/medicine_cubit.dart';
+import '../../../bloc/medicine/medicine_state.dart';
 import '../../../components/custom_header.dart';
+import '../../../components/medicine_card.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -32,7 +36,7 @@ Calendar(),
             ),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 40, left: 30, right: 30),
+                padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -43,7 +47,30 @@ Calendar(),
                         fontSize: 24,
                       ),
                     ),
-                    SizedBox(height: 25,)
+                    SizedBox(height: 25,),
+
+                    BlocBuilder<MedicineCubit, MedicineState>(
+                      builder: (context, state) {
+                        if (state.status == MedicineStatus.loading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        if (state.medicines.isEmpty) {
+                          return const Text('No medicines yet');
+                        }
+
+                        return Column(
+                          children: state.medicines.map((medicine) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 18),
+                              child: MedicineCard(medicine: medicine),
+                            );
+                          }).toList(),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
