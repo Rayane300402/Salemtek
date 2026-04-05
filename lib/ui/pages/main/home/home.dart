@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
     final isToday = _isSameDay(selectedDate, DateTime.now());
 
     final sectionTitle = isToday
-        ? "Today's Activity"
+        ? "Today's Reminder"
         : DateFormat('MMMM d').format(selectedDate);
 
     return Column(

@@ -30,7 +30,8 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] Right to left swipe shows edit btn or completed consumption (only shows edit, but excessive for completed swipes and removes as completed)
   - [ ] Create a global toast for delete and complete
   - [ ] add edit and complete in the 3 dot menu for user who would prefer to click than swipe
-
+  - [ ] better animation
+  
 - [ ] Set up Settings
   - [ ] Data section 
     - [ ] clear data
