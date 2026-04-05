@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salemtek/configs/assets/images.dart';
 import 'package:salemtek/configs/theme/palette.dart';
 import 'package:salemtek/ui/components/custom_button.dart';
+import 'package:salemtek/ui/pages/introduction/bloc/introduction_cubit.dart';
 import 'package:salemtek/ui/pages/main/main.dart';
 
 class IntroductionLayout extends StatelessWidget {
@@ -55,10 +57,7 @@ class IntroductionLayout extends StatelessWidget {
             alignment: Alignment.center,
             child: CustomButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const Main()),
-                );
+                context.read<IntroductionCubit>().completeIntro();
               },
               title: 'Get Started',
             ),

@@ -41,8 +41,10 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] turn on / off
     - [ ] excessive reminder option 
 
-- [ ] Set up Drug Cabinet
-  - [ ] same card as home
-  - [ ] has option to delete shown
+- [x] Set up Drug Cabinet
+  - [x] same card as home
+  - [x] has option to delete shown
 
-- [ ] Stop showing intro if user clicks start
+- [x] Stop showing intro if user clicks start
+
+- [ ] Add Splash Screen 

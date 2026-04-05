@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:salemtek/configs/theme/theme.dart';
 import 'package:salemtek/ui/bloc/medicine/medicine_cubit.dart';
-import 'package:salemtek/ui/pages/introduction/introductions.dart';
+import 'package:salemtek/ui/pages/introduction/bloc/introduction_cubit.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:salemtek/ui/pages/app_entry.dart';
 import 'package:salemtek/utils/service_locator.dart';
 
 Future<void> main() async {
@@ -27,12 +28,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<MedicineCubit>()..load(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<IntroductionCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<MedicineCubit>()..load(),
+        ),
+      ],
       child: MaterialApp(
        debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
-        home: IntroPage(),
+        home: AppEntry(),
       ),
     );
   }
