@@ -9,13 +9,13 @@ class MedicineCubit extends Cubit<MedicineState> {
 
   MedicineCubit(this.useCases) : super(MedicineState.initial());
 
+  String _completionKey(String medicineId, DateTime date) {
+    final normalized = DateTime(date.year, date.month, date.day);
+    return '${medicineId}_${normalized.toIso8601String()}';
+  }
+
   Future<void> load() async {
-    emit(
-      state.copyWith(
-        status: MedicineStatus.loading,
-        clearError: true,
-      ),
-    );
+    emit(state.copyWith(status: MedicineStatus.loading, clearError: true));
 
     try {
       final meds = await useCases.getAll();
@@ -25,6 +25,23 @@ class MedicineCubit extends Cubit<MedicineState> {
           medicines: meds,
           clearError: true,
         ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: MedicineStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> delete(String id) async {
+    try {
+      await useCases.delete(id);
+      final medicines = await useCases.getAll();
+      emit(
+        state.copyWith(status: MedicineStatus.success, medicines: medicines),
       );
     } catch (e) {
       emit(
@@ -64,20 +81,6 @@ class MedicineCubit extends Cubit<MedicineState> {
     }
   }
 
-  Future<void> delete(String id) async {
-    try {
-      await useCases.delete(id);
-      await load();
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: MedicineStatus.error,
-          errorMessage: e.toString(),
-        ),
-      );
-    }
-  }
-
   Future<void> restore(String id) async {
     try {
       await useCases.restore(id);
@@ -90,5 +93,16 @@ class MedicineCubit extends Cubit<MedicineState> {
         ),
       );
     }
+  }
+
+  void markCompletedForDate(String medicineId, DateTime date) {
+    final updated = Set<String>.from(state.completedKeys)
+      ..add(_completionKey(medicineId, date));
+
+    emit(state.copyWith(completedKeys: updated));
+  }
+
+  bool isCompletedForDate(String medicineId, DateTime date) {
+    return state.completedKeys.contains(_completionKey(medicineId, date));
   }
 }

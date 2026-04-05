@@ -26,6 +26,21 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] name of medicine
   - [x] quantity
   - [x] reminders
-  - Left to right swip shows delete button (extreme swip deletes, a small swipe only shows btn)
-  - Right to left swipe shows edit btn (only shows it)
+  - [x] Left to right swip shows delete button (extreme swip deletes, a small swipe only shows btn)
+  - [x] Right to left swipe shows edit btn or completed consumption (only shows edit, but excessive for completed swipes and removes as completed)
+  - [ ] Create a global toast for delete and complete
+  - [ ] add edit and complete in the 3 dot menu for user who would prefer to click than swipe
 
+- [ ] Set up Settings
+  - [ ] Data section 
+    - [ ] clear data
+    - [ ] restore data (for deleted_at stuff)
+  - [ ] Notification section
+    - [ ] turn on / off
+    - [ ] excessive reminder option 
+
+- [ ] Set up Drug Cabinet
+  - [ ] same card as home
+  - [ ] has option to delete shown
+
+- [ ] Stop showing intro if user clicks start
