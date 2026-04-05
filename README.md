@@ -31,6 +31,7 @@ Will provide a web view to see its full design without needing to set up here:
   - [ ] Create a global toast for delete and complete
   - [ ] add edit and complete in the 3 dot menu for user who would prefer to click than swipe
   - [ ] better animation
+  - [ ] center No medicine for this date and rephrase it to smth cuter
   
 - [ ] Set up Settings
   - [ ] Data section 
