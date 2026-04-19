@@ -29,7 +29,7 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] Left to right swip shows delete button (extreme swip deletes, a small swipe only shows btn)
   - [x] Right to left swipe shows edit btn or completed consumption (only shows edit, but excessive for completed swipes and removes as completed)
   - [x] Create a global toast for delete and complete
-  - [ ] add edit and complete in the 3 dot menu for user who would prefer to click than swipe
+  - [x] add edit and complete (if allowed to complete) and delete (if allowed to delete) in the 3 dot menu for user who would prefer to click than swipe
   - [ ] better animation
   - [x] center No medicine for this date and rephrase it to smth cuter
   

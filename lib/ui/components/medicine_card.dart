@@ -259,13 +259,62 @@ class _MedicineCardState extends State<MedicineCard> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 2),
-                      child: Icon(
+                    const SizedBox(width: 8),
+                    PopupMenuButton<String>(
+                      icon: const Icon(
                         Icons.more_vert,
                         size: 28,
                         color: Palette.text,
                       ),
+                      color: Palette.secondary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      onSelected: (value) {
+                        switch (value) {
+                          case 'edit':
+                            widget.onSecondaryAction();
+                            break;
+
+                          case 'complete':
+                            widget.onSecondaryAction();
+                            break;
+
+                          case 'delete':
+                            if (widget.enableDelete) {
+                              context.read<MedicineCubit>().delete(widget.medicine.id);
+                            }
+                            break;
+                        }
+                      },
+                      itemBuilder: (context) {
+                        final items = <PopupMenuEntry<String>>[
+                          const PopupMenuItem<String>(
+                            value: 'edit',
+                            child: Text('Edit'),
+                          ),
+                        ];
+
+                        if (widget.showCompleteAction) {
+                          items.add(
+                            const PopupMenuItem<String>(
+                              value: 'complete',
+                              child: Text('Complete'),
+                            ),
+                          );
+                        }
+
+                        if (widget.enableDelete) {
+                          items.add(
+                            const PopupMenuItem<String>(
+                              value: 'delete',
+                              child: Text('Delete'),
+                            ),
+                          );
+                        }
+
+                        return items;
+                      },
                     ),
                   ],
                 ),
