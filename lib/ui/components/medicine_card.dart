@@ -4,6 +4,7 @@ import '../../configs/theme/palette.dart';
 import '../../domain/entities/medicine.dart';
 import '../../domain/entities/reminder.dart';
 import '../bloc/medicine/medicine_cubit.dart';
+import 'global_toast.dart';
 
 class MedicineCard extends StatefulWidget {
   final Medicine medicine;
@@ -119,6 +120,10 @@ class _MedicineCardState extends State<MedicineCard> {
                         onPressed: () {
                           if (widget.enableDelete) {
                             context.read<MedicineCubit>().delete(widget.medicine.id);
+                            GlobalToast.show(
+                              'Medicine Deleted',
+                              isNegative: true
+                            );
                           }
                         },
                         icon:  Icon(

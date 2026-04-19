@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:salemtek/ui/components/global_toast.dart';
 import 'package:salemtek/ui/pages/main/home/components/calendar/bloc/calendar_load_cubit.dart';
 
 import '../../../../configs/theme/palette.dart';
@@ -81,10 +82,13 @@ class Home extends StatelessWidget {
                             .toList();
 
                         if (dueMedicines.isEmpty) {
-                          return Center(
-                            child: Text(
-                              'No medicines for this date',
-                              style: TextStyle(fontWeight: FontWeight.w500),
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: const Center(
+                              child: Text(
+                                'No medicines for this date',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
                             ),
                           );
                         }
@@ -105,6 +109,10 @@ class Home extends StatelessWidget {
                                           medicine.id,
                                           selectedDate,
                                         );
+
+                                    GlobalToast.show(
+                                      'Medicine Completed',
+                                    );
                                   } else {
                                     // TODO: open edit bottom sheet/page later
                                   }
