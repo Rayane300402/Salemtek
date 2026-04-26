@@ -7,4 +7,5 @@ class Palette {
   static const text = Color(0xff222126);
   static const secondary = Color(0xffEBEBED);
   static const button = Color(0xff3A5495);
+  static const medicineType = Color(0xffC8D4E5);
 }

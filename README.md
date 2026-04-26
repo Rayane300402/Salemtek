@@ -157,28 +157,27 @@ Will provide a web view to see its full design without needing to set up here:
 - [ ] Create/Edit Medicine UI
   - [ ] Shared screen/component
     - [ ] `CreateEditMedicine` handles both create and edit
-    - [ ] accepts optional `Medicine? medicine`
+    - [x] accepts optional `Medicine? medicine`
     - [ ] create mode when medicine is null
     - [ ] edit mode when medicine exists
-    - [ ] button text changes:
-      - [ ] Create
-      - [ ] Update
+    - [x] button text changes:
+      - [x] Create
+      - [x] Update
     - [ ] button closes sheet for now
     - [ ] no save/update logic yet
 
   - [ ] Medicine type selector
-    - [ ] horizontal scroll selector
-    - [ ] selected item is centered/emphasized
-    - [ ] selection affects:
-      - [ ] displayed image
-      - [ ] name field leading image
-      - [ ] dosage unit/options
+    - [x] horizontal scroll selector
+    - [x] selected item is centered/emphasized
+    - [x] selection affects:
+      - [x] displayed image
+      - [x] name field leading image
     - [ ] supported types:
-      - [ ] pill
-      - [ ] capsule
-      - [ ] injection/syringe
+      - [x] pill
+      - [x] capsule
+      - [x] injection/syringe
       - [ ] drip/IV drip
-      - [ ] cream
+      - [x] cream
       - [ ] inhaler
       - [ ] powder/sachet
       - [ ] bandage/wound care
@@ -186,11 +185,11 @@ Will provide a web view to see its full design without needing to set up here:
       - [ ] drops
       - [ ] suppository
 
-  - [ ] Medicine name section
-    - [ ] title: Name
-    - [ ] rounded input container
-    - [ ] leading image based on selected medicine type
-    - [ ] text field for medicine name
+  - [x] Medicine name section
+    - [x] title: Name
+    - [x] rounded input container
+    - [x] leading image based on selected medicine type
+    - [x] text field for medicine name
     - [ ] prefilled in edit mode
 
   - [ ] Reason section
