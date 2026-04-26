@@ -149,6 +149,6 @@ Will provide a web view to see its full design without needing to set up here:
     - [x] slides up from bottom
     - [x] uses white rounded top container
     - [x] no form logic yet
-  - [ ] Add medicine search
-    - [ ] search by medicine name
-    - [ ] search by medicine type/dosage text
+  - [x] Add medicine search
+    - [x] search by medicine name
+    - [x] search by medicine type/dosage text
