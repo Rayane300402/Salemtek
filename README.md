@@ -152,3 +152,102 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] Add medicine search
     - [x] search by medicine name
     - [x] search by medicine type/dosage text
+
+
+- [ ] Create/Edit Medicine UI
+  - [ ] Shared screen/component
+    - [ ] `CreateEditMedicine` handles both create and edit
+    - [ ] accepts optional `Medicine? medicine`
+    - [ ] create mode when medicine is null
+    - [ ] edit mode when medicine exists
+    - [ ] button text changes:
+      - [ ] Create
+      - [ ] Update
+    - [ ] button closes sheet for now
+    - [ ] no save/update logic yet
+
+  - [ ] Medicine type selector
+    - [ ] horizontal scroll selector
+    - [ ] selected item is centered/emphasized
+    - [ ] selection affects:
+      - [ ] displayed image
+      - [ ] name field leading image
+      - [ ] dosage unit/options
+    - [ ] supported types:
+      - [ ] pill
+      - [ ] capsule
+      - [ ] injection/syringe
+      - [ ] drip/IV drip
+      - [ ] cream
+      - [ ] inhaler
+      - [ ] powder/sachet
+      - [ ] bandage/wound care
+      - [ ] liquid
+      - [ ] drops
+      - [ ] suppository
+
+  - [ ] Medicine name section
+    - [ ] title: Name
+    - [ ] rounded input container
+    - [ ] leading image based on selected medicine type
+    - [ ] text field for medicine name
+    - [ ] prefilled in edit mode
+
+  - [ ] Reason section
+    - [ ] title: Reason
+    - [ ] optional multiline text field
+    - [ ] rounded large input container
+    - [ ] prefilled in edit mode
+    - [ ] can be empty
+
+  - [ ] Notification section
+    - [ ] title: Notification
+    - [ ] dropdown for reminder type
+    - [ ] options:
+      - [ ] none
+      - [ ] every X days
+      - [ ] every X weeks
+      - [ ] every X months
+    - [ ] show X value input only when reminder is not none
+    - [ ] X value must be friendly and adjustable
+    - [ ] selected reminder affects preview text later
+    - [ ] prefilled in edit mode
+
+  - [ ] Dosage section
+    - [ ] title: Dosage
+    - [ ] dosage UI changes based on medicine type
+    - [ ] examples:
+      - [ ] pill: 1 pill, 2 pills
+      - [ ] capsule: 1 capsule, 2 capsules
+      - [ ] injection: 1 injection
+      - [ ] inhaler: 1 puff, 2 puffs
+      - [ ] cream: apply once, apply twice
+      - [ ] powder/sachet: 1 sachet, 2 sachets
+      - [ ] liquid: ml-based or spoon-based
+      - [ ] drops: 1 drop, 2 drops
+      - [ ] suppository: 1 suppository
+      - [ ] bandage: apply/change once
+      - [ ] drip: 1 drip/session
+    - [ ] prefilled in edit mode
+
+  - [ ] Date section
+    - [ ] title: Date
+    - [ ] start date is required
+    - [ ] end date is optional
+    - [ ] rounded date buttons
+    - [ ] prefilled in edit mode
+    - [ ] empty end date means long-term/permanent medicine
+
+  - [ ] Submit button
+    - [ ] large rounded primary button
+    - [ ] create mode text: Create
+    - [ ] edit mode text: Update
+    - [ ] closes bottom sheet for now
+    - [ ] no database/cubit mutation yet
+
+  - [ ] Future data/model considerations
+    - [ ] medicine type should become a real field in `Medicine`
+    - [ ] dosage should probably become structured, not only string
+    - [ ] notification can stay structured using reminder unit/every value
+    - [ ] dosage history may be needed later for accurate stats
+    - [ ] completion/stats should eventually store exact dosage taken at that time
