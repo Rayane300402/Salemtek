@@ -135,3 +135,20 @@ Will provide a web view to see its full design without needing to set up here:
 - [x] Stop showing intro if user clicks start
 
 - [ ] Add Splash Screen 
+
+
+- [x] Cabinet search/create setup
+  - [x] Update `CustomHeader`
+    - [x] support optional primary icon action
+    - [x] support optional search icon action
+    - [x] keep existing pages working without changes
+  - [x] Update Cabinet header
+    - [x] search icon for future medicine search
+    - [x] add icon opens create medicine view
+  - [x] Create blank create/edit medicine sheet
+    - [x] slides up from bottom
+    - [x] uses white rounded top container
+    - [x] no form logic yet
+  - [ ] Add medicine search
+    - [ ] search by medicine name
+    - [ ] search by medicine type/dosage text

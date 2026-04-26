@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salemtek/ui/pages/main/create_edit/create_edit_medicine.dart';
 
 import '../../../../configs/theme/palette.dart';
+import '../../../../domain/entities/medicine.dart';
 import '../../../bloc/medicine/medicine_cubit.dart';
 import '../../../bloc/medicine/medicine_state.dart';
 import '../../../components/custom_header.dart';
@@ -10,14 +12,34 @@ import '../../../components/medicine_card.dart';
 class Cabinet extends StatelessWidget {
   const Cabinet({super.key});
 
+  void _openCreateEditMedicine(
+      BuildContext context, {
+        Medicine? medicine,
+      }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.86,
+          child: CreateEditMedicine(medicine: medicine),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomHeader(
-          title:  'Your\nDrug Cabinet',
-          onPressed: () {},
+          title: 'Your\nDrug Cabinet',
           icon: Icons.add,
+          onPressed: () => _openCreateEditMedicine(context),
+          onSearchPressed: () {
+            // todo work on it
+          },
         ),
         const SizedBox(height: 20),
         Expanded(
@@ -36,15 +58,11 @@ class Cabinet extends StatelessWidget {
                 child: BlocBuilder<MedicineCubit, MedicineState>(
                   builder: (context, state) {
                     if (state.status == MedicineStatus.loading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     final medicines = List.of(state.medicines)
-                      ..sort(
-                            (a, b) => b.dateCreated.compareTo(a.dateCreated),
-                      );
+                      ..sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
 
                     if (medicines.isEmpty) {
                       return const Center(
@@ -64,7 +82,10 @@ class Cabinet extends StatelessWidget {
                             showCompleteAction: false,
                             enableDelete: true,
                             onSecondaryAction: () {
-                              // TODO: open edit bottom sheet/page later
+                              _openCreateEditMedicine(
+                                context,
+                                medicine: medicine,
+                              );
                             },
                           ),
                         );
