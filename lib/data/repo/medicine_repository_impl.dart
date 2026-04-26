@@ -39,4 +39,13 @@ class MedicineRepositoryImpl implements MedicineRepository {
   Future<void> restoreMedicine(String id) {
     return localDataSource.restoreMedicine(id);
   }
+  @override
+  Future<void> restoreAllMedicines() {
+    return localDataSource.restoreAllMedicines();
+  }
+
+  @override
+  Future<void> hardDeleteAllMedicines() {
+    return localDataSource.hardDeleteAllMedicines();
+  }
 }

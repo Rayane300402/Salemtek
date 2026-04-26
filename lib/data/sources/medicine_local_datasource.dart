@@ -7,6 +7,8 @@ abstract class MedicineLocalDataSource {
   Future<MedicineModel> updateMedicine(MedicineModel medicine);
   Future<void> deleteMedicine(String id, {bool softDelete = true});
   Future<void> restoreMedicine(String id);
+  Future<void> restoreAllMedicines();
+  Future<void> hardDeleteAllMedicines();
 }
 
 class MedicineLocalDataSourceImpl implements MedicineLocalDataSource {
@@ -105,4 +107,23 @@ class MedicineLocalDataSourceImpl implements MedicineLocalDataSource {
       dateModified: DateTime.now(),
     );
   }
+
+  @override
+  Future<void> restoreAllMedicines() async {
+    for (var i = 0; i < _medicines.length; i++) {
+      if (_medicines[i].dateDeleted != null) {
+        _medicines[i] = _medicines[i].copyWith(
+          clearDateDeleted: true,
+          dateModified: DateTime.now(),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<void> hardDeleteAllMedicines() async {
+    _medicines.clear();
+  }
+
+
 }

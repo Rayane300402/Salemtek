@@ -6,7 +6,13 @@ class SettingsButton extends StatelessWidget {
   String subtitle;
   final IconData icon;
   final void Function()? onTap;
-  SettingsButton({super.key, required this.title, this.subtitle = '', required this.icon, required this.onTap});
+  SettingsButton({
+    super.key,
+    required this.title,
+    this.subtitle = '',
+    required this.icon,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,47 +21,46 @@ class SettingsButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
         decoration: BoxDecoration(
-          color: Palette.secondary,
-          borderRadius:  BorderRadius.circular(50),
-          boxShadow:[
+          color: const Color(0xFFF4F4F4),
+          borderRadius: BorderRadius.circular(999),
+          boxShadow: [
             BoxShadow(
-            color:  Color(0x40000000),
-              offset: const Offset(
-                0,
-                5.0,
-              ),
-              blurRadius: 21.4,
-              spreadRadius: 2.0,
-          )]
+              color: Colors.black.withValues(alpha: 0.10),
+              blurRadius: 24,
+              offset: const Offset(0, 10),
+            ),
+          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-                icon,
-              size: 35,
-            ),
-            SizedBox(width: 20,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
+            Icon(icon, size: 35),
+            SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     title,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
-                ),
-                if(subtitle != '')
-                Text(
-                    subtitle,
-                  style: TextStyle(
-                    color: Color(0xFF696870),
-                    fontWeight: FontWeight.w500
-                  ),
-                )
-              ],
-            )
+                  if (subtitle != '')
+                    Text(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      style: TextStyle(
+                        color: Color(0xFF696870),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -6,4 +6,6 @@ abstract class MedicineRepository {
   Future<Medicine> updateMedicine(Medicine medicine);
   Future<void> deleteMedicine(String id, {bool softDelete = true});
   Future<void> restoreMedicine(String id);
+  Future<void> restoreAllMedicines();
+  Future<void> hardDeleteAllMedicines();
 }
