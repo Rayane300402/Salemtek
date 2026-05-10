@@ -22,7 +22,7 @@ extension MedicineTypeX on MedicineType {
       case MedicineType.capsule:
         return Pills.capsule;
       case MedicineType.cream:
-        return Pills.capsule;
+        return Pills.cream;
       case MedicineType.injection:
         return Pills.syringe;
       case MedicineType.bandage:

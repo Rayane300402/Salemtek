@@ -176,16 +176,16 @@ Will provide a web view to see its full design without needing to set up here:
       - [x] pill
       - [x] capsule
       - [x] injection/syringe
-      - [ ] drip/IV drip
+      - [x] drip/IV drip
       - [x] cream
-      - [ ] inhaler
-      - [ ] powder/sachet
-      - [ ] bandage/wound care
-      - [ ] liquid
-      - [ ] drops
-      - [ ] suppository
+      - [x] inhaler
+      - [x] powder/sachet
+      - [x] bandage/wound care
+      - [x] liquid
+      - [x] drops
+      - [x] suppository
 
-  - [x] Medicine name section
+  - [ ] Medicine name section
     - [x] title: Name
     - [x] rounded input container
     - [x] leading image based on selected medicine type
@@ -193,9 +193,9 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] prefilled in edit mode
 
   - [ ] Reason section
-    - [ ] title: Reason
-    - [ ] optional multiline text field
-    - [ ] rounded large input container
+    - [x] title: Reason
+    - [x] optional multiline text field
+    - [x] rounded large input container
     - [ ] prefilled in edit mode
     - [ ] can be empty
 
@@ -250,3 +250,10 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] notification can stay structured using reminder unit/every value
     - [ ] dosage history may be needed later for accurate stats
     - [ ] completion/stats should eventually store exact dosage taken at that time
+  
+  - [ ] Medicine Details View
+    - [ ] Open from three-dot menu
+    - [ ] Bottom sheet with rounded top corners
+    - [ ] Show all medicine information
+    - [ ] Include optional reason text
+    - [ ] Reusable from Home and Cabinet

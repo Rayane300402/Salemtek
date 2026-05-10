@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salemtek/ui/pages/main/create_edit/components/medicine_reason_field.dart';
 
 import '../../../../../configs/theme/palette.dart';
 import '../../../../../domain/entities/medicine.dart';
@@ -23,10 +24,12 @@ class CreateEditMedicine extends StatefulWidget {
 class _CreateEditMedicineState extends State<CreateEditMedicine> {
   MedicineType selectedType = MedicineType.pill;
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController reasonController = TextEditingController();
 
   @override
   void dispose() {
     nameController.dispose();
+    reasonController.dispose();
     super.dispose();
   }
 
@@ -68,6 +71,10 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
                 type: selectedType,
                 controller: nameController,
               ),
+
+              const SizedBox(height: 30,),
+
+              MedicineReasonField(controller: reasonController),
 
               const SizedBox(height: 50),
 

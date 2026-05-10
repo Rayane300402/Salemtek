@@ -25,7 +25,7 @@ class MedicineNameField extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(999),
@@ -47,6 +47,9 @@ class MedicineNameField extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: controller,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
                   decoration: const InputDecoration(
                     hintText: 'Enter medicine name',
                     border: InputBorder.none,
