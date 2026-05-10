@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../../configs/theme/palette.dart';
 import '../models/medicine_type.dart';
 
 class MedicineNameField extends StatelessWidget {

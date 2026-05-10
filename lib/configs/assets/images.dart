@@ -1,7 +1,6 @@
 class Images {
   static const String basePath = 'assets/imgs/';
   static const String introductionPath = 'introduction';
-  static const String registrationPath = 'registration/';
 
   // Introduction Images
   static const String introLayout =
