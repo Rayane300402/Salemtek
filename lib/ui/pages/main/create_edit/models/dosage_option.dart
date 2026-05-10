@@ -1,4 +1,4 @@
-import 'medicine_type.dart';
+import '../../../../../domain/entities/medicine_type.dart';
 
 class DosageOption {
   final int value;

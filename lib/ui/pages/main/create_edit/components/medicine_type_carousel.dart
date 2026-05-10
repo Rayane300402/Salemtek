@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../configs/theme/palette.dart';
-import '../models/medicine_type.dart';
+import '../../../../../domain/entities/medicine_type.dart';
 
 class MedicineTypeCarousel extends StatefulWidget {
   final MedicineType selected;

@@ -31,12 +31,20 @@ class _MedicineCardState extends State<MedicineCard> {
   static const double _triggerSlide = 160;
 
   String _formatReminder() {
+    if (!widget.medicine.hasNotification) {
+      return 'No reminder';
+    }
+
     final unit = switch (widget.medicine.reminderUnit) {
       ReminderUnit.day => widget.medicine.reminderEvery == 1 ? 'day' : 'days',
       ReminderUnit.week => widget.medicine.reminderEvery == 1 ? 'week' : 'weeks',
       ReminderUnit.month => widget.medicine.reminderEvery == 1 ? 'month' : 'months',
       ReminderUnit.year => widget.medicine.reminderEvery == 1 ? 'year' : 'years',
     };
+
+    if (widget.medicine.reminderEvery == 1) {
+      return 'Every $unit';
+    }
 
     return 'Every ${widget.medicine.reminderEvery} $unit';
   }

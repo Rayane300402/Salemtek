@@ -9,7 +9,7 @@ import 'components/medicine_dosage_field.dart';
 import 'components/medicine_name_field.dart';
 import 'components/medicine_type_carousel.dart';
 import 'models/dosage_option.dart';
-import 'models/medicine_type.dart';
+import '../../../../domain/entities/medicine_type.dart';
 import 'models/notification_option.dart';
 
 class CreateEditMedicine extends StatefulWidget {

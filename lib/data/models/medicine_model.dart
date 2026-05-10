@@ -1,14 +1,22 @@
 import '../../domain/entities/medicine.dart';
+import '../../domain/entities/medicine_type.dart';
 import '../../domain/entities/reminder.dart';
 
 class MedicineModel {
   final String id;
-  final String imagePath;
+  final MedicineType type;
   final String title;
-  final String dosage;
+
+  final int dosageAmount;
+  final String dosageSingular;
+  final String dosagePlural;
+
   final String? reason;
+
+  final bool hasNotification;
   final int reminderEvery;
   final ReminderUnit reminderUnit;
+
   final DateTime startDate;
   final DateTime? endDate;
   final DateTime dateCreated;
@@ -17,10 +25,13 @@ class MedicineModel {
 
   const MedicineModel({
     required this.id,
-    required this.imagePath,
+    required this.type,
     required this.title,
-    required this.dosage,
+    required this.dosageAmount,
+    required this.dosageSingular,
+    required this.dosagePlural,
     this.reason,
+    required this.hasNotification,
     required this.reminderEvery,
     required this.reminderUnit,
     required this.startDate,
@@ -30,14 +41,16 @@ class MedicineModel {
     required this.dateModified,
   });
 
-  /// 🔁 Convert Model → Entity
   Medicine toEntity() {
     return Medicine(
       id: id,
-      imagePath: imagePath,
+      type: type,
       title: title,
-      dosage: dosage,
+      dosageAmount: dosageAmount,
+      dosageSingular: dosageSingular,
+      dosagePlural: dosagePlural,
       reason: reason,
+      hasNotification: hasNotification,
       reminderEvery: reminderEvery,
       reminderUnit: reminderUnit,
       startDate: startDate,
@@ -48,14 +61,16 @@ class MedicineModel {
     );
   }
 
-  /// 🔁 Convert Entity → Model
   factory MedicineModel.fromEntity(Medicine medicine) {
     return MedicineModel(
       id: medicine.id,
-      imagePath: medicine.imagePath,
+      type: medicine.type,
       title: medicine.title,
-      dosage: medicine.dosage,
+      dosageAmount: medicine.dosageAmount,
+      dosageSingular: medicine.dosageSingular,
+      dosagePlural: medicine.dosagePlural,
       reason: medicine.reason,
+      hasNotification: medicine.hasNotification,
       reminderEvery: medicine.reminderEvery,
       reminderUnit: medicine.reminderUnit,
       startDate: medicine.startDate,
@@ -66,13 +81,15 @@ class MedicineModel {
     );
   }
 
-  /// 🧬 Copy (for updates)
   MedicineModel copyWith({
     String? id,
-    String? imagePath,
+    MedicineType? type,
     String? title,
-    String? dosage,
+    int? dosageAmount,
+    String? dosageSingular,
+    String? dosagePlural,
     String? reason,
+    bool? hasNotification,
     int? reminderEvery,
     ReminderUnit? reminderUnit,
     DateTime? startDate,
@@ -86,10 +103,13 @@ class MedicineModel {
   }) {
     return MedicineModel(
       id: id ?? this.id,
-      imagePath: imagePath ?? this.imagePath,
+      type: type ?? this.type,
       title: title ?? this.title,
-      dosage: dosage ?? this.dosage,
+      dosageAmount: dosageAmount ?? this.dosageAmount,
+      dosageSingular: dosageSingular ?? this.dosageSingular,
+      dosagePlural: dosagePlural ?? this.dosagePlural,
       reason: clearReason ? null : (reason ?? this.reason),
+      hasNotification: hasNotification ?? this.hasNotification,
       reminderEvery: reminderEvery ?? this.reminderEvery,
       reminderUnit: reminderUnit ?? this.reminderUnit,
       startDate: startDate ?? this.startDate,
@@ -100,35 +120,42 @@ class MedicineModel {
     );
   }
 
-  /// 🔜 Future (SQLite / JSON support)
   factory MedicineModel.fromJson(Map<String, dynamic> json) {
     return MedicineModel(
-      id: json['id'],
-      imagePath: json['imagePath'],
-      title: json['title'],
-      dosage: json['dosage'],
-      reason: json['reason'],
-      reminderEvery: json['reminderEvery'],
-      reminderUnit: json['reminderUnit'],
-      startDate: DateTime.parse(json['startDate']),
+      id: json['id'] as String,
+      type: MedicineType.values.byName(json['type'] as String),
+      title: json['title'] as String,
+      dosageAmount: json['dosageAmount'] as int,
+      dosageSingular: json['dosageSingular'] as String,
+      dosagePlural: json['dosagePlural'] as String,
+      reason: json['reason'] as String?,
+      hasNotification: json['hasNotification'] as bool,
+      reminderEvery: json['reminderEvery'] as int,
+      reminderUnit: ReminderUnit.values.byName(json['reminderUnit'] as String),
+      startDate: DateTime.parse(json['startDate'] as String),
       endDate: json['endDate'] != null
-          ? DateTime.parse(json['endDate'])
+          ? DateTime.parse(json['endDate'] as String)
           : null,
-      dateCreated: DateTime.parse(json['dateCreated']),
+      dateCreated: DateTime.parse(json['dateCreated'] as String),
       dateDeleted: json['dateDeleted'] != null
-          ? DateTime.parse(json['dateDeleted'])
+          ? DateTime.parse(json['dateDeleted'] as String)
           : null,
-      dateModified: DateTime.parse(json['dateModified']),
+      dateModified: DateTime.parse(json['dateModified'] as String),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'imagePath': imagePath,
+      'type': type.name,
       'title': title,
-      'dosage': dosage,
+      'dosageAmount': dosageAmount,
+      'dosageSingular': dosageSingular,
+      'dosagePlural': dosagePlural,
       'reason': reason,
+      'hasNotification': hasNotification,
+      'reminderEvery': reminderEvery,
+      'reminderUnit': reminderUnit.name,
       'startDate': startDate.toIso8601String(),
       'endDate': endDate?.toIso8601String(),
       'dateCreated': dateCreated.toIso8601String(),

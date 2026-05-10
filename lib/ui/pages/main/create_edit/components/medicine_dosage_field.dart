@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../configs/theme/palette.dart';
 import '../models/dosage_option.dart';
-import '../models/medicine_type.dart';
+import '../../../../../domain/entities/medicine_type.dart';
 
 class MedicineDosageField extends StatelessWidget {
   final MedicineType type;

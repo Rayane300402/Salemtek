@@ -1,3 +1,4 @@
+import '../../domain/entities/medicine_type.dart';
 import '../../domain/entities/reminder.dart';
 import '../models/medicine_model.dart';
 
@@ -15,10 +16,13 @@ class MedicineLocalDataSourceImpl implements MedicineLocalDataSource {
   final List<MedicineModel> _medicines = [
     MedicineModel(
       id: '1',
-      imagePath: 'assets/imgs/pills/capsule.png',
+      type: MedicineType.capsule,
       title: 'Benzonatate',
-      dosage: '100 mg, 1 capsule',
+      dosageAmount: 1,
+      dosageSingular: 'capsule',
+      dosagePlural: 'capsules',
       reason: 'Cough',
+      hasNotification: true,
       reminderEvery: 1,
       reminderUnit: ReminderUnit.day,
       startDate: DateTime(2026, 4, 19),
@@ -29,10 +33,13 @@ class MedicineLocalDataSourceImpl implements MedicineLocalDataSource {
     ),
     MedicineModel(
       id: '2',
-      imagePath: 'assets/imgs/pills/pill.png',
+      type: MedicineType.pill,
       title: 'Loratadine',
-      dosage: '10 mg, 2 pills',
+      dosageAmount: 2,
+      dosageSingular: 'pill',
+      dosagePlural: 'pills',
       reason: 'Allergy',
+      hasNotification: true,
       reminderEvery: 4,
       reminderUnit: ReminderUnit.day,
       startDate: DateTime(2026, 4, 19),
@@ -43,10 +50,13 @@ class MedicineLocalDataSourceImpl implements MedicineLocalDataSource {
     ),
     MedicineModel(
       id: '3',
-      imagePath: 'assets/imgs/pills/syringe.png',
+      type: MedicineType.injection,
       title: 'Liraglutide',
-      dosage: '3 mg, 1 injection',
+      dosageAmount: 1,
+      dosageSingular: 'injection',
+      dosagePlural: 'injections',
       reason: null,
+      hasNotification: true,
       reminderEvery: 4,
       reminderUnit: ReminderUnit.month,
       startDate: DateTime(2026, 4, 20),
@@ -56,7 +66,6 @@ class MedicineLocalDataSourceImpl implements MedicineLocalDataSource {
       dateModified: DateTime.now(),
     ),
   ];
-
   @override
   Future<List<MedicineModel>> getAllMedicines({
     bool includeDeleted = false,
