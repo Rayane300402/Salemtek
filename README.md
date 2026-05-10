@@ -201,32 +201,58 @@ Will provide a web view to see its full design without needing to set up here:
 
   - [ ] Notification section
     - [ ] title: Notification
-    - [ ] dropdown for reminder type
-    - [ ] options:
-      - [ ] none
-      - [ ] every X days
-      - [ ] every X weeks
-      - [ ] every X months
-    - [ ] show X value input only when reminder is not none
-    - [ ] X value must be friendly and adjustable
+    - [x] create notification option model
+      - [x] none
+      - [x] every day
+      - [x] every X days
+      - [x] every week
+      - [x] every X weeks
+      - [x] every month
+      - [x] every X months
+    - [x] dropdown for reminder type
+    - [x] show custom X input only for:
+      - [x] every X days
+      - [x] every X weeks
+      - [x] every X months
+    - [x] hide custom X input for:
+      - [x] none
+      - [x] every day
+      - [x] every week
+      - [x] every month
+    - [x] X value must be friendly and adjustable
+      - [x] numeric input
+      - [ ] prevent zero/negative values
+      - [x] show unit label based on selected option
+        - [x] days
+        - [x] weeks
+        - [x] months
     - [ ] selected reminder affects preview text later
-    - [ ] prefilled in edit mode
+      - [ ] None
+      - [ ] Every day
+      - [ ] Every 2 days
+      - [ ] Every week
+      - [ ] Every 3 weeks
+      - [ ] Every month
+      - [ ] Every 2 months
+    - [ ] prefilled in edit mode later
+    - [x] UI-only for now
+    - [ ] later map notification option to medicine reminder fields
 
   - [ ] Dosage section
-    - [ ] title: Dosage
-    - [ ] dosage UI changes based on medicine type
-    - [ ] examples:
-      - [ ] pill: 1 pill, 2 pills
-      - [ ] capsule: 1 capsule, 2 capsules
-      - [ ] injection: 1 injection
-      - [ ] inhaler: 1 puff, 2 puffs
-      - [ ] cream: apply once, apply twice
-      - [ ] powder/sachet: 1 sachet, 2 sachets
-      - [ ] liquid: ml-based or spoon-based
-      - [ ] drops: 1 drop, 2 drops
-      - [ ] suppository: 1 suppository
-      - [ ] bandage: apply/change once
-      - [ ] drip: 1 drip/session
+    - [x] title: Dosage
+    - [x] dosage UI changes based on medicine type
+    - [x] examples:
+      - [x] pill: 1 pill, 2 pills
+      - [x] capsule: 1 capsule, 2 capsules
+      - [x] injection: 1 injection
+      - [x] inhaler: 1 puff, 2 puffs
+      - [x] cream: apply once, apply twice
+      - [x] powder/sachet: 1 sachet, 2 sachets
+      - [x] liquid: ml-based or spoon-based
+      - [x] drops: 1 drop, 2 drops
+      - [x] suppository: 1 suppository
+      - [x] bandage: apply/change once
+      - [x] drip: 1 drip/session
     - [ ] prefilled in edit mode
 
   - [ ] Date section
