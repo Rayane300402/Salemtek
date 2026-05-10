@@ -256,10 +256,10 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] prefilled in edit mode
 
   - [ ] Date section
-    - [ ] title: Date
-    - [ ] start date is required
-    - [ ] end date is optional
-    - [ ] rounded date buttons
+    - [x] title: Date
+    - [x] start date is required
+    - [x] end date is optional
+    - [x] rounded date buttons
     - [ ] prefilled in edit mode
     - [ ] empty end date means long-term/permanent medicine
 

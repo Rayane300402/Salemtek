@@ -4,6 +4,7 @@ import 'package:salemtek/ui/pages/main/create_edit/components/medicine_reason_fi
 
 import '../../../../../configs/theme/palette.dart';
 import '../../../../../domain/entities/medicine.dart';
+import 'components/medicine_date_field.dart';
 import 'components/medicine_dosage_field.dart';
 import 'components/medicine_name_field.dart';
 import 'components/medicine_type_carousel.dart';
@@ -26,6 +27,8 @@ class CreateEditMedicine extends StatefulWidget {
 }
 
 class _CreateEditMedicineState extends State<CreateEditMedicine> {
+  DateTime? startDate;
+  DateTime? endDate;
   late DosageOption selectedDosage;
 
   MedicineType selectedType = MedicineType.pill;
@@ -45,6 +48,9 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
 
     // Default dosage for selected type
     selectedDosage = selectedType.dosageOptions.first;
+
+    final now = DateTime.now();
+    startDate = DateTime(now.year, now.month, now.day);
   }
 
   @override
@@ -119,6 +125,27 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
                 onChanged: (dosage) {
                   setState(() {
                     selectedDosage = dosage;
+                  });
+                },
+              ),
+
+              const SizedBox(height: 30),
+
+              MedicineDateField(
+                startDate: startDate,
+                endDate: endDate,
+                onStartDateChanged: (date) {
+                  setState(() {
+                    startDate = date;
+
+                    if (endDate != null && endDate!.isBefore(date)) {
+                      endDate = null;
+                    }
+                  });
+                },
+                onEndDateChanged: (date) {
+                  setState(() {
+                    endDate = date;
                   });
                 },
               ),
