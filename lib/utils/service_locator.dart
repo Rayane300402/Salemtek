@@ -27,8 +27,6 @@ Future<void> initServiceLocator() async {
 
   sl.registerLazySingleton(() => MedicineUseCases(sl()));
 
-  // sl.registerFactory(() => MedicineCubit(sl()));
-
   sl.registerLazySingleton<MedicineCubit>(
         () => MedicineCubit(sl())..load(),
   );

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salemtek/ui/pages/main/create_edit/components/medicine_notification.dart';
 import 'package:salemtek/ui/pages/main/create_edit/components/medicine_reason_field.dart';
 
 import '../../../../../configs/theme/palette.dart';
 import '../../../../../domain/entities/medicine.dart';
+import '../../../../domain/entities/reminder.dart';
+import '../../../bloc/medicine/medicine_cubit.dart';
+import '../../../components/global_toast.dart';
 import 'components/medicine_date_field.dart';
 import 'components/medicine_dosage_field.dart';
 import 'components/medicine_name_field.dart';
@@ -59,6 +63,84 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
     customNotificationController.dispose();
     reasonController.dispose();
     super.dispose();
+  }
+
+  ReminderUnit _reminderUnitFromOption() {
+    switch (selectedNotification) {
+      case NotificationOption.everyDay:
+      case NotificationOption.everyXDays:
+        return ReminderUnit.day;
+
+      case NotificationOption.everyWeek:
+      case NotificationOption.everyXWeeks:
+        return ReminderUnit.week;
+
+      case NotificationOption.everyMonth:
+      case NotificationOption.everyXMonths:
+        return ReminderUnit.month;
+
+      case NotificationOption.none:
+        return ReminderUnit.day;
+    }
+  }
+
+  int _reminderEveryFromOption() {
+    switch (selectedNotification) {
+      case NotificationOption.none:
+        return 1;
+
+      case NotificationOption.everyDay:
+      case NotificationOption.everyWeek:
+      case NotificationOption.everyMonth:
+        return 1;
+
+      case NotificationOption.everyXDays:
+      case NotificationOption.everyXWeeks:
+      case NotificationOption.everyXMonths:
+        final value = int.tryParse(customNotificationController.text.trim());
+        return value == null || value <= 0 ? 1 : value;
+    }
+  }
+
+  Future<void> _createMedicine() async {
+    final title = nameController.text.trim();
+
+    if (title.isEmpty) {
+      GlobalToast.show(
+        'Medicine name is required',
+        isNegative: true,
+      );
+      return;
+    }
+
+    final now = DateTime.now();
+
+    final medicine = Medicine(
+      id: now.microsecondsSinceEpoch.toString(),
+      type: selectedType,
+      title: title,
+      dosageAmount: selectedDosage.value,
+      dosageSingular: selectedDosage.singularLabel,
+      dosagePlural: selectedDosage.pluralLabel,
+      reason: reasonController.text.trim().isEmpty
+          ? null
+          : reasonController.text.trim(),
+      hasNotification: selectedNotification != NotificationOption.none,
+      reminderEvery: _reminderEveryFromOption(),
+      reminderUnit: _reminderUnitFromOption(),
+      startDate: startDate!,
+      endDate: endDate,
+      dateCreated: now,
+      dateDeleted: null,
+      dateModified: now,
+    );
+
+    await context.read<MedicineCubit>().add(medicine);
+
+    if (!mounted) return;
+
+    GlobalToast.show('Medicine Created');
+    Navigator.pop(context);
   }
 
   @override
@@ -156,7 +238,7 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: widget.isEditing ? () => Navigator.pop(context) : _createMedicine,
                   child: Text(widget.isEditing ? 'Update' : 'Create'),
                 ),
               ),
