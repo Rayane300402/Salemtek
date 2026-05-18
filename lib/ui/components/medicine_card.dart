@@ -10,14 +10,16 @@ class MedicineCard extends StatefulWidget {
   final Medicine medicine;
   final bool showCompleteAction;
   final bool enableDelete;
-  final VoidCallback onSecondaryAction;
+  final VoidCallback onEdit;
+  final VoidCallback? onComplete;
 
   const MedicineCard({
     super.key,
     required this.medicine,
     required this.showCompleteAction,
     required this.enableDelete,
-    required this.onSecondaryAction,
+    required this.onEdit,
+    this.onComplete,
   });
 
   @override
@@ -74,7 +76,7 @@ class _MedicineCardState extends State<MedicineCard> {
 
     // COMPLETE (full swipe executes)
     if (_dragOffset <= -_triggerSlide && widget.showCompleteAction) {
-      widget.onSecondaryAction();
+      widget.onComplete?.call();
       setState(() => _dragOffset = 0);
       return;
     }
@@ -159,7 +161,9 @@ class _MedicineCardState extends State<MedicineCard> {
                     width: _maxSlide,
                     child: Center(
                       child: IconButton(
-                        onPressed: widget.onSecondaryAction,
+                        onPressed: widget.showCompleteAction
+                            ? widget.onComplete
+                            : widget.onEdit,
                         icon: Icon(
                           widget.showCompleteAction
                               ? Icons.check
@@ -281,11 +285,11 @@ class _MedicineCardState extends State<MedicineCard> {
                       onSelected: (value) {
                         switch (value) {
                           case 'edit':
-                            widget.onSecondaryAction();
+                            widget.onEdit();
                             break;
 
                           case 'complete':
-                            widget.onSecondaryAction();
+                            widget.onComplete?.call();
                             break;
 
                           case 'delete':

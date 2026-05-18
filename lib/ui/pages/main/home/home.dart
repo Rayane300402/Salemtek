@@ -5,10 +5,12 @@ import 'package:salemtek/ui/components/global_toast.dart';
 import 'package:salemtek/ui/pages/main/home/components/calendar/bloc/calendar_load_cubit.dart';
 
 import '../../../../configs/theme/palette.dart';
+import '../../../../domain/entities/medicine.dart';
 import '../../../bloc/medicine/medicine_cubit.dart';
 import '../../../bloc/medicine/medicine_state.dart';
 import '../../../components/custom_header.dart';
 import '../../../components/medicine_card.dart';
+import '../create_edit/create_edit_medicine.dart';
 import '../home/components/calendar/calendar.dart';
 
 class Home extends StatelessWidget {
@@ -16,6 +18,23 @@ class Home extends StatelessWidget {
 
   bool _isSameDay(DateTime a, DateTime b) {
     return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  void _openCreateEditMedicine(
+    BuildContext context, {
+    required Medicine medicine,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.86,
+          child: CreateEditMedicine(medicine: medicine),
+        );
+      },
+    );
   }
 
   @override
@@ -101,21 +120,21 @@ class Home extends StatelessWidget {
                                 medicine: medicine,
                                 showCompleteAction: isToday,
                                 enableDelete: false,
-                                onSecondaryAction: () {
-                                  if (isToday) {
-                                    context
-                                        .read<MedicineCubit>()
-                                        .markCompletedForDate(
-                                          medicine.id,
-                                          selectedDate,
-                                        );
+                                onEdit: () {
+                                  _openCreateEditMedicine(
+                                    context,
+                                    medicine: medicine,
+                                  );
+                                },
+                                onComplete: () {
+                                  context
+                                      .read<MedicineCubit>()
+                                      .markCompletedForDate(
+                                        medicine.id,
+                                        selectedDate,
+                                      );
 
-                                    GlobalToast.show(
-                                      'Medicine Completed',
-                                    );
-                                  } else {
-                                    // TODO: open edit bottom sheet/page later
-                                  }
+                                  GlobalToast.show('Medicine Completed');
                                 },
                               ),
                             );

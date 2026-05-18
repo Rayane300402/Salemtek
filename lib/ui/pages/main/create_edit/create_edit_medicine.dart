@@ -47,14 +47,31 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
   void initState() {
     super.initState();
 
-    // Default medicine type
-    selectedType = MedicineType.pill;
+    final medicine = widget.medicine;
 
-    // Default dosage for selected type
-    selectedDosage = selectedType.dosageOptions.first;
+    if (medicine != null) {
+      selectedType = medicine.type;
+      selectedDosage = _dosageOptionFromMedicine(medicine);
 
-    final now = DateTime.now();
-    startDate = DateTime(now.year, now.month, now.day);
+      selectedNotification = _notificationOptionFromMedicine(medicine);
+
+      if (medicine.reminderEvery > 1) {
+        customNotificationController.text = medicine.reminderEvery.toString();
+      }
+
+      nameController.text = medicine.title;
+      reasonController.text = medicine.reason ?? '';
+
+      startDate = medicine.startDate;
+      endDate = medicine.endDate;
+    } else {
+      selectedType = MedicineType.pill;
+      selectedDosage = selectedType.dosageOptions.first;
+      selectedNotification = NotificationOption.everyDay;
+
+      final now = DateTime.now();
+      startDate = DateTime(now.year, now.month, now.day);
+    }
   }
 
   @override
@@ -63,6 +80,35 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
     customNotificationController.dispose();
     reasonController.dispose();
     super.dispose();
+  }
+
+  NotificationOption _notificationOptionFromMedicine(Medicine medicine) {
+    final every = medicine.reminderEvery;
+    final unit = medicine.reminderUnit;
+
+    if (unit == ReminderUnit.day) {
+      return every == 1
+          ? NotificationOption.everyDay
+          : NotificationOption.everyXDays;
+    }
+
+    if (unit == ReminderUnit.week) {
+      return every == 1
+          ? NotificationOption.everyWeek
+          : NotificationOption.everyXWeeks;
+    }
+
+    return every == 1
+        ? NotificationOption.everyMonth
+        : NotificationOption.everyXMonths;
+  }
+
+  DosageOption _dosageOptionFromMedicine(Medicine medicine) {
+    return DosageOption(
+      value: medicine.dosageAmount,
+      singularLabel: medicine.dosageSingular,
+      pluralLabel: medicine.dosagePlural,
+    );
   }
 
   ReminderUnit _reminderUnitFromOption() {
@@ -138,6 +184,51 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
     GlobalToast.show('Medicine Created');
     Navigator.pop(context);
   }
+
+  Future<void> _updateMedicine() async {
+    final title = nameController.text.trim();
+
+    if (title.isEmpty) {
+      GlobalToast.show(
+        'Medicine name is required',
+        isNegative: true,
+      );
+      return;
+    }
+
+    final existing = widget.medicine;
+    if (existing == null) return;
+
+    final now = DateTime.now();
+
+    final updatedMedicine = Medicine(
+      id: existing.id,
+      type: selectedType,
+      title: title,
+      dosageAmount: selectedDosage.value,
+      dosageSingular: selectedDosage.singularLabel,
+      dosagePlural: selectedDosage.pluralLabel,
+      reason: reasonController.text.trim().isEmpty
+          ? null
+          : reasonController.text.trim(),
+      hasNotification: true,
+      reminderEvery: _reminderEveryFromOption(),
+      reminderUnit: _reminderUnitFromOption(),
+      startDate: startDate!,
+      endDate: endDate,
+      dateCreated: existing.dateCreated,
+      dateDeleted: existing.dateDeleted,
+      dateModified: now,
+    );
+
+    await context.read<MedicineCubit>().update(updatedMedicine);
+
+    if (!mounted) return;
+
+    GlobalToast.show('Medicine Updated');
+    Navigator.pop(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -234,7 +325,7 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: widget.isEditing ? () => Navigator.pop(context) : _createMedicine,
+                  onPressed: widget.isEditing ? () => _updateMedicine() : _createMedicine,
                   child: Text(widget.isEditing ? 'Update' : 'Create'),
                 ),
               ),

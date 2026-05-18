@@ -172,7 +172,7 @@ class _CabinetState extends State<Cabinet> {
                               medicine: medicine,
                               showCompleteAction: false,
                               enableDelete: true,
-                              onSecondaryAction: () {
+                              onEdit: () {
                                 _openCreateEditMedicine(
                                   context,
                                   medicine: medicine,

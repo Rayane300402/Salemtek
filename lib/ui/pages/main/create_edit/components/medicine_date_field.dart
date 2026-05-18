@@ -26,17 +26,28 @@ class MedicineDateField extends StatelessWidget {
     final today = DateTime.now();
     final normalizedToday = DateTime(today.year, today.month, today.day);
 
+    final safeInitialDate =
+    startDate != null && !startDate!.isBefore(normalizedToday)
+        ? startDate!
+        : normalizedToday;
+
     final picked = await showDatePicker(
       context: context,
-      initialDate: startDate ?? normalizedToday,
+      initialDate: safeInitialDate,
       firstDate: normalizedToday,
       lastDate: DateTime(normalizedToday.year + 10),
     );
 
     if (picked != null) {
-      onStartDateChanged(DateTime(picked.year, picked.month, picked.day));
+      final normalizedPicked = DateTime(
+        picked.year,
+        picked.month,
+        picked.day,
+      );
 
-      if (endDate != null && endDate!.isBefore(picked)) {
+      onStartDateChanged(normalizedPicked);
+
+      if (endDate != null && endDate!.isBefore(normalizedPicked)) {
         onEndDateChanged(null);
       }
     }
