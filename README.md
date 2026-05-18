@@ -185,22 +185,22 @@ Will provide a web view to see its full design without needing to set up here:
       - [x] drops
       - [x] suppository
 
-  - [ ] Medicine name section
+  - [x] Medicine name section
     - [x] title: Name
     - [x] rounded input container
     - [x] leading image based on selected medicine type
     - [x] text field for medicine name
-    - [ ] prefilled in edit mode
+    - [x] prefilled in edit mode
 
-  - [ ] Reason section
+  - [x] Reason section
     - [x] title: Reason
     - [x] optional multiline text field
     - [x] rounded large input container
-    - [ ] prefilled in edit mode
-    - [ ] can be empty
+    - [x] prefilled in edit mode
+    - [x] can be empty
 
-  - [ ] Notification section
-    - [ ] title: Notification
+  - [x] Notification section
+    - [x] title: Notification
     - [x] create notification option model
       - [x] none
       - [x] every day
@@ -221,24 +221,23 @@ Will provide a web view to see its full design without needing to set up here:
       - [x] every month
     - [x] X value must be friendly and adjustable
       - [x] numeric input
-      - [ ] prevent zero/negative values
+      - [x] prevent zero/negative values
       - [x] show unit label based on selected option
         - [x] days
         - [x] weeks
         - [x] months
-    - [ ] selected reminder affects preview text later
-      - [ ] None
-      - [ ] Every day
-      - [ ] Every 2 days
-      - [ ] Every week
-      - [ ] Every 3 weeks
-      - [ ] Every month
-      - [ ] Every 2 months
+    - [x] selected reminder affects preview text later
+      - [x] Every day
+      - [x] Every 2 days
+      - [x] Every week
+      - [x] Every 3 weeks
+      - [x] Every month
+      - [x] Every 2 months
     - [ ] prefilled in edit mode later
     - [x] UI-only for now
     - [ ] later map notification option to medicine reminder fields
 
-  - [ ] Dosage section
+  - [x] Dosage section
     - [x] title: Dosage
     - [x] dosage UI changes based on medicine type
     - [x] examples:
@@ -253,27 +252,27 @@ Will provide a web view to see its full design without needing to set up here:
       - [x] suppository: 1 suppository
       - [x] bandage: apply/change once
       - [x] drip: 1 drip/session
-    - [ ] prefilled in edit mode
+    - [x] prefilled in edit mode
 
-  - [ ] Date section
+  - [x] Date section
     - [x] title: Date
     - [x] start date is required
     - [x] end date is optional
     - [x] rounded date buttons
-    - [ ] prefilled in edit mode
-    - [ ] empty end date means long-term/permanent medicine
+    - [x] prefilled in edit mode
+    - [x] empty end date means long-term/permanent medicine
 
-  - [ ] Submit button
-    - [ ] large rounded primary button
-    - [ ] create mode text: Create
-    - [ ] edit mode text: Update
-    - [ ] closes bottom sheet for now
+  - [x] Submit button
+    - [x] large rounded primary button
+    - [x] create mode text: Create
+    - [x] edit mode text: Update
+    - [x] closes bottom sheet for now
     - [ ] no database/cubit mutation yet
 
   - [ ] Future data/model considerations
-    - [ ] medicine type should become a real field in `Medicine`
-    - [ ] dosage should probably become structured, not only string
-    - [ ] notification can stay structured using reminder unit/every value
+    - [x] medicine type should become a real field in `Medicine`
+    - [x] dosage should probably become structured, not only string
+    - [x] notification can stay structured using reminder unit/every value
     - [ ] dosage history may be needed later for accurate stats
     - [ ] completion/stats should eventually store exact dosage taken at that time
   
