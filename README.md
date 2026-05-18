@@ -276,9 +276,9 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] dosage history may be needed later for accurate stats
     - [ ] completion/stats should eventually store exact dosage taken at that time
   
-  - [ ] Medicine Details View
-    - [ ] Open from three-dot menu
-    - [ ] Bottom sheet with rounded top corners
+  - [x] Medicine Details View
+    - [x] Open from three-dot menu
+    - [x] Bottom sheet with rounded top corners
     - [ ] Show all medicine information
-    - [ ] Include optional reason text
-    - [ ] Reusable from Home and Cabinet
+    - [x] Include optional reason text
+    - [x] Reusable from Home and Cabinet
