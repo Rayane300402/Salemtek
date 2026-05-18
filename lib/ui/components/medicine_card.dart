@@ -39,9 +39,12 @@ class _MedicineCardState extends State<MedicineCard> {
 
     final unit = switch (widget.medicine.reminderUnit) {
       ReminderUnit.day => widget.medicine.reminderEvery == 1 ? 'day' : 'days',
-      ReminderUnit.week => widget.medicine.reminderEvery == 1 ? 'week' : 'weeks',
-      ReminderUnit.month => widget.medicine.reminderEvery == 1 ? 'month' : 'months',
-      ReminderUnit.year => widget.medicine.reminderEvery == 1 ? 'year' : 'years',
+      ReminderUnit.week =>
+        widget.medicine.reminderEvery == 1 ? 'week' : 'weeks',
+      ReminderUnit.month =>
+        widget.medicine.reminderEvery == 1 ? 'month' : 'months',
+      ReminderUnit.year =>
+        widget.medicine.reminderEvery == 1 ? 'year' : 'years',
     };
 
     if (widget.medicine.reminderEvery == 1) {
@@ -90,14 +93,69 @@ class _MedicineCardState extends State<MedicineCard> {
     setState(() {
       if (_dragOffset.abs() < 40) {
         _dragOffset = 0;
-      }
-      else if (_dragOffset > 0 && widget.enableDelete) {
+      } else if (_dragOffset > 0 && widget.enableDelete) {
         _dragOffset = _maxSlide;
-      }
-      else if (_dragOffset < 0) {
+      } else if (_dragOffset < 0) {
         _dragOffset = -_maxSlide;
       }
     });
+  }
+
+  void _openReasonModal() {
+    final reason = widget.medicine.reason?.trim();
+
+    if (reason == null || reason.isEmpty) return;
+
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'Reason',
+      barrierColor: Colors.black.withValues(alpha: 0.45),
+      transitionDuration: const Duration(milliseconds: 220),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return SafeArea(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Palette.secondary,
+                  borderRadius: BorderRadius.circular(32),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Reason',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Palette.text,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      reason,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        height: 1.5,
+                        color: Palette.text,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _closeCard() {
@@ -118,7 +176,7 @@ class _MedicineCardState extends State<MedicineCard> {
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
-                  color:  Palette.navIcon,
+                  color: Palette.navIcon,
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Align(
@@ -129,14 +187,16 @@ class _MedicineCardState extends State<MedicineCard> {
                       child: IconButton(
                         onPressed: () {
                           if (widget.enableDelete) {
-                            context.read<MedicineCubit>().delete(widget.medicine.id);
+                            context.read<MedicineCubit>().delete(
+                              widget.medicine.id,
+                            );
                             GlobalToast.show(
                               'Medicine Deleted',
-                              isNegative: true
+                              isNegative: true,
                             );
                           }
                         },
-                        icon:  Icon(
+                        icon: Icon(
                           Icons.delete_outline,
                           color: Palette.secondary,
                           size: 34,
@@ -201,7 +261,10 @@ class _MedicineCardState extends State<MedicineCard> {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 18,
+                ),
                 child: Row(
                   children: [
                     SizedBox(
@@ -288,13 +351,19 @@ class _MedicineCardState extends State<MedicineCard> {
                             widget.onEdit();
                             break;
 
+                          case 'reason':
+                            _openReasonModal();
+                            break;
+
                           case 'complete':
                             widget.onComplete?.call();
                             break;
 
                           case 'delete':
                             if (widget.enableDelete) {
-                              context.read<MedicineCubit>().delete(widget.medicine.id);
+                              context.read<MedicineCubit>().delete(
+                                widget.medicine.id,
+                              );
                             }
                             break;
                         }
@@ -321,6 +390,15 @@ class _MedicineCardState extends State<MedicineCard> {
                             const PopupMenuItem<String>(
                               value: 'delete',
                               child: Text('Delete'),
+                            ),
+                          );
+                        }
+                        if (widget.medicine.reason != null &&
+                            widget.medicine.reason!.trim().isNotEmpty) {
+                          items.add(
+                            const PopupMenuItem<String>(
+                              value: 'reason',
+                              child: Text('Reason'),
                             ),
                           );
                         }
