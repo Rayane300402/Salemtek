@@ -1,5 +1,4 @@
 enum NotificationOption {
-  none,
   everyDay,
   everyXDays,
   everyWeek,
@@ -11,8 +10,6 @@ enum NotificationOption {
 extension NotificationOptionX on NotificationOption {
   String get label {
     switch (this) {
-      case NotificationOption.none:
-        return 'None';
       case NotificationOption.everyDay:
         return 'Every day';
       case NotificationOption.everyXDays:

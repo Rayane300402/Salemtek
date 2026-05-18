@@ -36,7 +36,7 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
   late DosageOption selectedDosage;
 
   MedicineType selectedType = MedicineType.pill;
-  NotificationOption selectedNotification = NotificationOption.none;
+  NotificationOption selectedNotification = NotificationOption.everyDay;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController reasonController = TextEditingController();
@@ -79,15 +79,11 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
       case NotificationOption.everyXMonths:
         return ReminderUnit.month;
 
-      case NotificationOption.none:
-        return ReminderUnit.day;
     }
   }
 
   int _reminderEveryFromOption() {
     switch (selectedNotification) {
-      case NotificationOption.none:
-        return 1;
 
       case NotificationOption.everyDay:
       case NotificationOption.everyWeek:
@@ -125,7 +121,7 @@ class _CreateEditMedicineState extends State<CreateEditMedicine> {
       reason: reasonController.text.trim().isEmpty
           ? null
           : reasonController.text.trim(),
-      hasNotification: selectedNotification != NotificationOption.none,
+      hasNotification: true,
       reminderEvery: _reminderEveryFromOption(),
       reminderUnit: _reminderUnitFromOption(),
       startDate: startDate!,
