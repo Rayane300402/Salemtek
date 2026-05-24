@@ -400,6 +400,16 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] Visual states
       - [ ] Locked → low opacity
       - [ ] Unlocked → full color
+      
+  - [ ] Statistics action recording
+    - [ ] Record completed medicine actions
+    - [ ] Record skipped medicine actions
+    - [ ] Create statistic entry from Home page interactions
+    - [ ] Refresh statistics automatically after action
+    - [ ] Prevent duplicate records for same medicine/date/action
+    - [ ] Future:
+      - [ ] allow editing action status
+      - [ ] allow removing mistaken records
 
   - [ ] Empty states
     - [ ] No statistics available
