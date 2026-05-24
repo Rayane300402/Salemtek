@@ -12,10 +12,12 @@ class StatisticsCubit extends Cubit<StatisticsState> {
   StatisticsCubit(this.useCases) : super(StatisticsState.initial());
 
   Future<void> load() async {
-    emit(state.copyWith(
-      status: StatisticsStatus.loading,
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        status: StatisticsStatus.loading,
+        clearError: true,
+      ),
+    );
 
     try {
       final statistics = await useCases.getAll();
@@ -29,10 +31,12 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
       emit(computed.copyWith(status: StatisticsStatus.success));
     } catch (e) {
-      emit(state.copyWith(
-        status: StatisticsStatus.error,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: StatisticsStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -44,10 +48,12 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       selectedDate: state.selectedDate,
     );
 
-    emit(computed.copyWith(
-      status: StatisticsStatus.success,
-      clearMedicineTypeFilter: type == null,
-    ));
+    emit(
+      computed.copyWith(
+        status: StatisticsStatus.success,
+        clearMedicineTypeFilter: type == null,
+      ),
+    );
   }
 
   void changeTimeFilter({
@@ -92,7 +98,12 @@ class StatisticsCubit extends Cubit<StatisticsState> {
         .length;
 
     final total = completedCount + skippedCount;
+
     final completionRate = total == 0 ? 0.0 : completedCount / total * 100;
+
+    final streak = _calculateStreak(filtered);
+
+    final consistency = total == 0 ? 0.0 : completedCount / total * 100;
 
     return StatisticsState(
       status: StatisticsStatus.success,
@@ -103,6 +114,8 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       completedCount: completedCount,
       skippedCount: skippedCount,
       completionRate: completionRate,
+      streak: streak,
+      consistency: consistency,
     );
   }
 
@@ -132,5 +145,32 @@ class StatisticsCubit extends Cubit<StatisticsState> {
           return true;
       }
     }).toList();
+  }
+
+  int _calculateStreak(List<MedicineStatistic> statistics) {
+    final completedDates = statistics
+        .where((s) => s.actionType == StatisticActionType.completed)
+        .map(
+          (s) => DateTime(
+        s.actionDate.year,
+        s.actionDate.month,
+        s.actionDate.day,
+      ),
+    )
+        .toSet();
+
+    if (completedDates.isEmpty) return 0;
+
+    var today = DateTime.now();
+    var current = DateTime(today.year, today.month, today.day);
+
+    var streak = 0;
+
+    while (completedDates.contains(current)) {
+      streak++;
+      current = current.subtract(const Duration(days: 1));
+    }
+
+    return streak;
   }
 }

@@ -20,9 +20,14 @@ class StatisticsState {
   final MedicineType? selectedMedicineType;
   final StatisticsTimeFilterType timeFilterType;
   final DateTime selectedDate;
+
   final int completedCount;
   final int skippedCount;
   final double completionRate;
+
+  final int streak;
+  final double consistency;
+
   final String? errorMessage;
 
   const StatisticsState({
@@ -34,6 +39,8 @@ class StatisticsState {
     required this.completedCount,
     required this.skippedCount,
     required this.completionRate,
+    required this.streak,
+    required this.consistency,
     this.errorMessage,
   });
 
@@ -49,6 +56,8 @@ class StatisticsState {
       completedCount: 0,
       skippedCount: 0,
       completionRate: 0,
+      streak: 0,
+      consistency: 0,
       errorMessage: null,
     );
   }
@@ -62,6 +71,8 @@ class StatisticsState {
     int? completedCount,
     int? skippedCount,
     double? completionRate,
+    int? streak,
+    double? consistency,
     String? errorMessage,
     bool clearMedicineTypeFilter = false,
     bool clearError = false,
@@ -77,6 +88,8 @@ class StatisticsState {
       completedCount: completedCount ?? this.completedCount,
       skippedCount: skippedCount ?? this.skippedCount,
       completionRate: completionRate ?? this.completionRate,
+      streak: streak ?? this.streak,
+      consistency: consistency ?? this.consistency,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
     );
   }

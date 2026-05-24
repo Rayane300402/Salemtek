@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../configs/theme/palette.dart';
-import '../../../bloc/medicine/medicine_cubit.dart';
-import '../../../bloc/medicine/medicine_state.dart';
+import '../../../bloc/statistics/statistics_cubit.dart';
+import '../../../bloc/statistics/statistics_state.dart';
 import 'components/statistics_header.dart';
 import 'components/summary_card.dart';
 
@@ -14,11 +14,7 @@ class Statistics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BlocBuilder<MedicineCubit, MedicineState>(
-          builder: (context, medicineState) {
-            return const StatisticsHeader();
-          },
-        ),
+        const StatisticsHeader(),
 
         const SizedBox(height: 20),
 
@@ -40,33 +36,28 @@ class Statistics extends StatelessWidget {
                   right: 30,
                   bottom: 40,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    /// SUMMARY CARDS
-                    Row(
+                child: BlocBuilder<StatisticsCubit, StatisticsState>(
+                  builder: (context, state) {
+                    return Row(
                       children: [
                         Expanded(
                           child: SummaryCard(
-                            value: '10',
+                            value: '${state.streak}',
                             label: 'Streak',
                             color: Palette.navIcon,
                           ),
                         ),
-
                         const SizedBox(width: 20),
-
                         Expanded(
                           child: SummaryCard(
-                            value: '100%',
+                            value: '${state.consistency.toStringAsFixed(0)}%',
                             label: 'Consistency',
                             color: Palette.primary,
                           ),
                         ),
                       ],
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -76,4 +67,3 @@ class Statistics extends StatelessWidget {
     );
   }
 }
-

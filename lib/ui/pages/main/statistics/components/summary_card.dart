@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../configs/theme/palette.dart';
 
@@ -8,6 +8,7 @@ class SummaryCard extends StatelessWidget {
   final Color color;
 
   const SummaryCard({
+    super.key,
     required this.value,
     required this.label,
     required this.color,
@@ -35,9 +36,7 @@ class SummaryCard extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 10),
-
         Text(
           label,
           style: const TextStyle(
