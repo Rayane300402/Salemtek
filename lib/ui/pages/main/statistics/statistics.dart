@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salemtek/ui/pages/main/statistics/components/statistics_header.dart';
 
-import '../../../components/custom_header.dart';
+import '../../../bloc/medicine/medicine_cubit.dart';
+import '../../../bloc/medicine/medicine_state.dart';
 
 class Statistics extends StatelessWidget {
   const Statistics({super.key});
@@ -9,11 +12,10 @@ class Statistics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // TODO: REMOVE CUSTOM HEADER AND CREATE COMPONENT PROPERLY FOR STATS AS TITLE HAVE DROPDOWN
-        CustomHeader(
-          title:  'All Medicine\nJanuary,2026',
-          onPressed: () {},
-          icon: Icons.refresh,
+        BlocBuilder<MedicineCubit, MedicineState>(
+          builder: (context, medicineState) {
+            return StatisticsHeader();
+          },
         )
       ],
     );;

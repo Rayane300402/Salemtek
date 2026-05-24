@@ -314,16 +314,15 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] Compute achievements
 
   - [ ] Header filters
-    - [ ] Medicine filter dropdown
-      - [ ] All medicines
-      - [ ] Specific medicine
-      - [ ] Optional future filter by medicine type
-    - [ ] Time filter dropdown
-      - [ ] Specific month and year
-      - [ ] Entire year
-      - [ ] Lifetime
-    - [ ] Refresh button
-      - [ ] Recalculate statistics
+    - [x] Medicine filter dropdown
+      - [x] All medicines
+      - [x] Optional future filter by medicine type
+    - [x] Time filter dropdown
+      - [x] Specific month and year
+      - [x] Entire year
+      - [x] Lifetime
+    - [x] Refresh button
+      - [x] Recalculate statistics
 
   - [ ] Summary cards
     - [ ] Streak

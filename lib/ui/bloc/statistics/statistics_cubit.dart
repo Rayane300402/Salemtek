@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 import '../../../domain/entities/medicine_statistic.dart';
+import '../../../domain/entities/medicine_type.dart';
 import '../../../domain/entities/statistic_action_type.dart';
 import '../../../domain/usecases/statistics_usecases.dart';
 import 'statistics_state.dart';
@@ -21,7 +22,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
       final computed = _computeState(
         statistics: statistics,
-        selectedMedicineId: state.selectedMedicineId,
+        selectedMedicineType: state.selectedMedicineType,
         timeFilterType: state.timeFilterType,
         selectedDate: state.selectedDate,
       );
@@ -35,28 +36,17 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     }
   }
 
-  void changeMedicineFilter(String? medicineId) {
+  void changeMedicineTypeFilter(MedicineType? type) {
     final computed = _computeState(
       statistics: state.statistics,
-      selectedMedicineId: medicineId,
-      timeFilterType: state.timeFilterType,
-      selectedDate: state.selectedDate,
-    );
-
-    emit(computed.copyWith(status: StatisticsStatus.success));
-  }
-
-  void clearMedicineFilter() {
-    final computed = _computeState(
-      statistics: state.statistics,
-      selectedMedicineId: null,
+      selectedMedicineType: type,
       timeFilterType: state.timeFilterType,
       selectedDate: state.selectedDate,
     );
 
     emit(computed.copyWith(
       status: StatisticsStatus.success,
-      clearMedicineFilter: true,
+      clearMedicineTypeFilter: type == null,
     ));
   }
 
@@ -68,7 +58,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
     final computed = _computeState(
       statistics: state.statistics,
-      selectedMedicineId: state.selectedMedicineId,
+      selectedMedicineType: state.selectedMedicineType,
       timeFilterType: type,
       selectedDate: normalizedDate,
     );
@@ -82,13 +72,13 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
   StatisticsState _computeState({
     required List<MedicineStatistic> statistics,
-    required String? selectedMedicineId,
+    required MedicineType? selectedMedicineType,
     required StatisticsTimeFilterType timeFilterType,
     required DateTime selectedDate,
   }) {
     final filtered = _applyFilters(
       statistics: statistics,
-      selectedMedicineId: selectedMedicineId,
+      selectedMedicineType: selectedMedicineType,
       timeFilterType: timeFilterType,
       selectedDate: selectedDate,
     );
@@ -102,13 +92,12 @@ class StatisticsCubit extends Cubit<StatisticsState> {
         .length;
 
     final total = completedCount + skippedCount;
-
     final completionRate = total == 0 ? 0.0 : completedCount / total * 100;
 
     return StatisticsState(
       status: StatisticsStatus.success,
       statistics: statistics,
-      selectedMedicineId: selectedMedicineId,
+      selectedMedicineType: selectedMedicineType,
       timeFilterType: timeFilterType,
       selectedDate: selectedDate,
       completedCount: completedCount,
@@ -119,13 +108,13 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
   List<MedicineStatistic> _applyFilters({
     required List<MedicineStatistic> statistics,
-    required String? selectedMedicineId,
+    required MedicineType? selectedMedicineType,
     required StatisticsTimeFilterType timeFilterType,
     required DateTime selectedDate,
   }) {
     return statistics.where((statistic) {
-      if (selectedMedicineId != null &&
-          statistic.medicineId != selectedMedicineId) {
+      if (selectedMedicineType != null &&
+          statistic.medicineType != selectedMedicineType) {
         return false;
       }
 

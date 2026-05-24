@@ -1,4 +1,5 @@
 import '../../../domain/entities/medicine_statistic.dart';
+import '../../../domain/entities/medicine_type.dart';
 
 enum StatisticsStatus {
   initial,
@@ -16,7 +17,7 @@ enum StatisticsTimeFilterType {
 class StatisticsState {
   final StatisticsStatus status;
   final List<MedicineStatistic> statistics;
-  final String? selectedMedicineId;
+  final MedicineType? selectedMedicineType;
   final StatisticsTimeFilterType timeFilterType;
   final DateTime selectedDate;
   final int completedCount;
@@ -27,7 +28,7 @@ class StatisticsState {
   const StatisticsState({
     required this.status,
     required this.statistics,
-    required this.selectedMedicineId,
+    required this.selectedMedicineType,
     required this.timeFilterType,
     required this.selectedDate,
     required this.completedCount,
@@ -42,7 +43,7 @@ class StatisticsState {
     return StatisticsState(
       status: StatisticsStatus.initial,
       statistics: const [],
-      selectedMedicineId: null,
+      selectedMedicineType: null,
       timeFilterType: StatisticsTimeFilterType.month,
       selectedDate: DateTime(now.year, now.month),
       completedCount: 0,
@@ -55,22 +56,22 @@ class StatisticsState {
   StatisticsState copyWith({
     StatisticsStatus? status,
     List<MedicineStatistic>? statistics,
-    String? selectedMedicineId,
+    MedicineType? selectedMedicineType,
     StatisticsTimeFilterType? timeFilterType,
     DateTime? selectedDate,
     int? completedCount,
     int? skippedCount,
     double? completionRate,
     String? errorMessage,
-    bool clearMedicineFilter = false,
+    bool clearMedicineTypeFilter = false,
     bool clearError = false,
   }) {
     return StatisticsState(
       status: status ?? this.status,
       statistics: statistics ?? this.statistics,
-      selectedMedicineId: clearMedicineFilter
+      selectedMedicineType: clearMedicineTypeFilter
           ? null
-          : selectedMedicineId ?? this.selectedMedicineId,
+          : selectedMedicineType ?? this.selectedMedicineType,
       timeFilterType: timeFilterType ?? this.timeFilterType,
       selectedDate: selectedDate ?? this.selectedDate,
       completedCount: completedCount ?? this.completedCount,
