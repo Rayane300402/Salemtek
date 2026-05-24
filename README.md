@@ -307,9 +307,9 @@ Will provide a web view to see its full design without needing to set up here:
     - [x] Create statistics use cases
 
   - [ ] Statistics Cubit
-    - [ ] Load statistics
-    - [ ] Apply filters
-    - [ ] Compute summary values
+    - [x] Load statistics
+    - [x] Apply filters
+    - [x] Compute summary values
     - [ ] Compute chart data
     - [ ] Compute achievements
 

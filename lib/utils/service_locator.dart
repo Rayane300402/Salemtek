@@ -15,6 +15,7 @@ import '../domain/usecases/settings_usecases.dart';
 import '../domain/usecases/statistics_usecases.dart';
 import '../ui/bloc/medicine/medicine_cubit.dart';
 import '../ui/bloc/settings/settings_cubit.dart';
+import '../ui/bloc/statistics/statistics_cubit.dart' show StatisticsCubit;
 
 final sl = GetIt.instance;
 
@@ -49,6 +50,10 @@ Future<void> initServiceLocator() async {
 
   sl.registerLazySingleton<SettingsLocalDataSource>(
         () => SettingsLocalDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<StatisticsCubit>(
+        () => StatisticsCubit(sl())..load(),
   );
 
   sl.registerLazySingleton<SettingsRepo>(

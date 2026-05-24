@@ -4,6 +4,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:salemtek/configs/theme/theme.dart';
 import 'package:salemtek/ui/bloc/medicine/medicine_cubit.dart';
 import 'package:salemtek/ui/bloc/settings/settings_cubit.dart';
+import 'package:salemtek/ui/bloc/statistics/statistics_cubit.dart';
 import 'package:salemtek/ui/pages/introduction/bloc/introduction_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:salemtek/ui/pages/app_entry.dart';
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => sl<MedicineCubit>()..load(),
+        ),
+        BlocProvider<StatisticsCubit>(
+          create: (_) => sl<StatisticsCubit>(),
         ),
         BlocProvider<SettingsCubit>(
           create: (_) => sl<SettingsCubit>(),
