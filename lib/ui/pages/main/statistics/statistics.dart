@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../configs/theme/palette.dart';
+import '../../../bloc/medicine/medicine_cubit.dart';
+import '../../../bloc/medicine/medicine_state.dart';
 import '../../../bloc/statistics/statistics_cubit.dart';
 import '../../../bloc/statistics/statistics_state.dart';
+import 'components/progress_section.dart';
 import 'components/statistics_header.dart';
 import 'components/summary_card.dart';
 
@@ -38,22 +41,40 @@ class Statistics extends StatelessWidget {
                 ),
                 child: BlocBuilder<StatisticsCubit, StatisticsState>(
                   builder: (context, state) {
-                    return Row(
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: SummaryCard(
-                            value: '${state.streak}',
-                            label: 'Streak',
-                            color: Palette.navIcon,
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SummaryCard(
+                                value: '${state.streak}',
+                                label: 'Streak',
+                                color: Palette.navIcon,
+                              ),
+                            ),
+
+                            const SizedBox(width: 20),
+
+                            Expanded(
+                              child: SummaryCard(
+                                value: '${state.consistency.toStringAsFixed(0)}%',
+                                label: 'Consistency',
+                                color: Palette.primary,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: SummaryCard(
-                            value: '${state.consistency.toStringAsFixed(0)}%',
-                            label: 'Consistency',
-                            color: Palette.primary,
-                          ),
+
+                        const SizedBox(height: 35),
+
+                        BlocBuilder<MedicineCubit, MedicineState>(
+                          builder: (context, medicineState) {
+                            return ProgressSection(
+                              percentage: state.consistency,
+                              medicines: medicineState.medicines,
+                            );
+                          },
                         ),
                       ],
                     );
@@ -63,6 +84,8 @@ class Statistics extends StatelessWidget {
             ),
           ),
         ),
+
+
       ],
     );
   }

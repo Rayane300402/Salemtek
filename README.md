@@ -334,96 +334,101 @@ Will provide a web view to see its full design without needing to set up here:
         - [ ] completed doses / total scheduled doses × 100
 
   - [ ] Progress section
-    - [ ] Title: Progress
+    - x ] Title: Progress
+
+    - [x] Progress overview container
+      - [x] Horizontal layout
+      - [x] Fixed height
+      - [x] Holds circle + medicine legend
+      - [x] Prevent full-height expansion
 
     - [ ] Completion percentage circle
       - [ ] Show percentage of scheduled doses completed
       - [ ] Respect current medicine and date filters
+      - [ ] Animated percentage later
+      - [ ] Future chart ring support
 
     - [ ] Medicine legend
-      - [ ] Show medicine icon and title
-      - [ ] Display only medicines included in current filter
+      - [x] Show medicine icon and title
+      - [x] Display only medicines included in current filter
+      - [x] Scrollable vertical list
+      - [x] Fixed max height
+      - [ ] Custom scrollbar styling later
 
-    - [ ] Line chart
-      - [ ] Y-axis = doses completed
-      - [ ] X-axis adapts to selected period
-        - [ ] Month filter → days of month
-        - [ ] Year filter → months
-        - [ ] Lifetime filter → years
-      - [ ] Show one line per medicine
-      - [ ] Respect current filters
+    - [ ] Progress chart section
+      - [ ] Add line chart under overview container later
 
-  - [ ] Scheduled dose calculation
-    - [ ] Calculate expected doses using:
-      - [ ] start date
-      - [ ] optional end date
-      - [ ] reminder interval
-      - [ ] reminder unit
-    - [ ] Support:
-      - [ ] daily reminders
-      - [ ] weekly reminders
-      - [ ] monthly reminders
-    - [ ] Ignore dates before start date
-    - [ ] Ignore dates after end date
-    - [ ] Permanent medicines (no end date) continue indefinitely
+    - [ ] Scheduled dose calculation
+      - [ ] Calculate expected doses using:
+        - [ ] start date
+        - [ ] optional end date
+        - [ ] reminder interval
+        - [ ] reminder unit
+      - [ ] Support:
+        - [ ] daily reminders
+        - [ ] weekly reminders
+        - [ ] monthly reminders
+      - [ ] Ignore dates before start date
+      - [ ] Ignore dates after end date
+      - [ ] Permanent medicines (no end date) continue indefinitely
 
-  - [ ] Achievements section
-    - [ ] Title: Achievements
-    - [ ] Achievement cards for medicine mastery
+    - [ ] Achievements section
+      - [ ] Title: Achievements
+      - [ ] Achievement cards for medicine mastery
 
-    - [ ] General achievements
-      - [ ] First Dose
-      - [ ] 7-Day Streak
-      - [ ] 30-Day Streak
-      - [ ] 100% Monthly Consistency
+      - [ ] General achievements
+        - [ ] First Dose
+        - [ ] 7-Day Streak
+        - [ ] 30-Day Streak
+        - [ ] 100% Monthly Consistency
 
-    - [ ] Type-specific achievements
-      - [ ] Pill Keeper
-      - [ ] Capsule Champion
-      - [ ] Injection Instructor
-      - [ ] Cream Captain
-      - [ ] Drop Doctor
-      - [ ] Inhaler Hero
-      - [ ] Liquid Legend
-      - [ ] Sachet Specialist
-      - [ ] Suppository Specialist
-      - [ ] Bandage Guardian
-      - [ ] IV Drip Master
+      - [ ] Type-specific achievements
+        - [ ] Pill Keeper
+        - [ ] Capsule Champion
+        - [ ] Injection Instructor
+        - [ ] Cream Captain
+        - [ ] Drop Doctor
+        - [ ] Inhaler Hero
+        - [ ] Liquid Legend
+        - [ ] Sachet Specialist
+        - [ ] Suppository Specialist
+        - [ ] Bandage Guardian
+        - [ ] IV Drip Master
 
-    - [ ] Unlock rules
-      - [ ] Based on total completed doses by medicine type
-      - [ ] Example thresholds:
-        - [ ] 10 doses
-        - [ ] 50 doses
-        - [ ] 100 doses
+      - [ ] Unlock rules
+        - [ ] Based on total completed doses by medicine type
+        - [ ] Example thresholds:
+          - [ ] 10 doses
+          - [ ] 50 doses
+          - [ ] 100 doses
 
-    - [ ] Visual states
-      - [ ] Locked → low opacity
-      - [ ] Unlocked → full color
+      - [ ] Visual states
+        - [ ] Locked → low opacity
+        - [ ] Unlocked → full color
       
-  - [ ] Statistics action recording
-    - [ ] Record completed medicine actions
-    - [ ] Record skipped medicine actions
-    - [ ] Create statistic entry from Home page interactions
-    - [ ] Refresh statistics automatically after action
-    - [ ] Prevent duplicate records for same medicine/date/action
-    - [ ] Future:
-      - [ ] allow editing action status
-      - [ ] allow removing mistaken records
+    - [ ] Statistics action recording
+      - [ ] Record completed medicine actions
+      - [ ] Record skipped medicine actions
+      - [ ] Create statistic entry from Home page interactions
+      - [ ] Refresh statistics automatically after action
+      - [ ] Prevent duplicate records for same medicine/date/action
+      - [ ] Future:
+        - [ ] allow editing action status
+        - [ ] allow removing mistaken records
 
-  - [ ] Empty states
-    - [ ] No statistics available
-    - [ ] No data for selected filters
-    - [ ] No achievements unlocked yet
+    - [ ] Empty states
+      - [ ] No statistics available
+      - [ ] No data for selected filters
+      - [ ] No achievements unlocked yet
 
-  - [ ] Hard reset integration
-    - [ ] Delete all statistics
-    - [ ] Reset streaks
-    - [ ] Reset achievements
+    - [ ] Hard reset integration
+      - [ ] Delete all statistics
+      - [ ] Reset streaks
+      - [ ] Reset achievements
 
-  - [ ] Future enhancements
-    - [ ] Export statistics
-    - [ ] Share achievements
-    - [ ] Weekly reports
-    - [ ] Monthly reports
-    - [ ] Personalized insights
+    - [ ] Future enhancements
+      - [ ] Export statistics
+      - [ ] Share achievements
+      - [ ] Weekly reports
+      - [ ] Monthly reports
+      - [ ] Personalized insights
