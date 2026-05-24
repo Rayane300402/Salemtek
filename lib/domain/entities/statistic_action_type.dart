@@ -1,0 +1,4 @@
+enum StatisticActionType {
+  completed,
+  skipped,
+}

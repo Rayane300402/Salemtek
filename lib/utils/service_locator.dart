@@ -3,12 +3,16 @@ import 'package:salemtek/ui/pages/introduction/bloc/introduction_cubit.dart';
 
 import '../data/repo/medicine_repository_impl.dart' show MedicineRepositoryImpl;
 import '../data/repo/settings_repo_impl.dart';
+import '../data/repo/statistics_repository_impl.dart';
 import '../data/sources/medicine_local_datasource.dart';
 import '../data/sources/settings_local_data_source.dart';
+import '../data/sources/statistics_local_datasource.dart';
 import '../domain/repo/medicine_repository.dart';
 import '../domain/repo/settings_repository.dart';
+import '../domain/repo/statistics_repository.dart';
 import '../domain/usecases/medicine_usecases.dart';
 import '../domain/usecases/settings_usecases.dart';
+import '../domain/usecases/statistics_usecases.dart';
 import '../ui/bloc/medicine/medicine_cubit.dart';
 import '../ui/bloc/settings/settings_cubit.dart';
 
@@ -31,6 +35,18 @@ Future<void> initServiceLocator() async {
         () => MedicineCubit(sl())..load(),
   );
 
+  sl.registerLazySingleton<StatisticsLocalDataSource>(
+        () => StatisticsLocalDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<StatisticsRepository>(
+        () => StatisticsRepositoryImpl(sl()),
+  );
+
+  sl.registerLazySingleton<StatisticsUseCases>(
+        () => StatisticsUseCases(sl()),
+  );
+
   sl.registerLazySingleton<SettingsLocalDataSource>(
         () => SettingsLocalDataSourceImpl(),
   );
@@ -48,6 +64,9 @@ Future<void> initServiceLocator() async {
       settingsUseCases: sl(),
       medicineRepo: sl(),
       medicineCubit: sl<MedicineCubit>(),
+      statisticsUseCases: sl(),
     )..load(),
   );
+
+
 }

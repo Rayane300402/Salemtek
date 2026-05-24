@@ -134,8 +134,7 @@ Will provide a web view to see its full design without needing to set up here:
 
 - [x] Stop showing intro if user clicks start
 
-- [ ] Add Splash Screen 
-
+- [ ] Add Splash Screen
 
 - [x] Cabinet search/create setup
   - [x] Update `CustomHeader`
@@ -152,7 +151,6 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] Add medicine search
     - [x] search by medicine name
     - [x] search by medicine type/dosage text
-
 
 - [ ] Create/Edit Medicine UI
   - [ ] Shared screen/component
@@ -282,3 +280,141 @@ Will provide a web view to see its full design without needing to set up here:
     - [ ] Show all medicine information
     - [x] Include optional reason text
     - [x] Reusable from Home and Cabinet
+
+- [ ] Statistics Page
+  - [x] Statistics data foundation
+    - [x] Create local statistics table/data source
+    - [x] Store one record for every medicine action
+      - [x] completed
+      - [x] skipped
+    - [x] Required fields
+      - [x] id
+      - [x] medicineId
+      - [x] medicineType
+      - [x] dosageAmount
+      - [x] actionType (completed / skipped)
+      - [x] actionDate
+      - [x] dateCreated
+    - [x] Keep historical data even if medicine is edited later
+    - [x] Remove statistics during hard reset
+    - [x] Preserve statistics during soft delete
+    - [x] Optional future export support
+
+  - [x] Domain layer
+    - [x] Create `MedicineStatistic` entity
+    - [x] Create model with JSON / SQLite support
+    - [x] Create statistics repository
+    - [x] Create statistics use cases
+
+  - [ ] Statistics Cubit
+    - [ ] Load statistics
+    - [ ] Apply filters
+    - [ ] Compute summary values
+    - [ ] Compute chart data
+    - [ ] Compute achievements
+
+  - [ ] Header filters
+    - [ ] Medicine filter dropdown
+      - [ ] All medicines
+      - [ ] Specific medicine
+      - [ ] Optional future filter by medicine type
+    - [ ] Time filter dropdown
+      - [ ] Specific month and year
+      - [ ] Entire year
+      - [ ] Lifetime
+    - [ ] Refresh button
+      - [ ] Recalculate statistics
+
+  - [ ] Summary cards
+    - [ ] Streak
+      - [ ] Number of consecutive days with at least one completed medicine
+      - [ ] Reset when a day has no completed medicines
+    - [ ] Consistency
+      - [ ] Percentage of completed scheduled doses
+      - [ ] Formula:
+        - [ ] completed doses / total scheduled doses × 100
+
+  - [ ] Progress section
+    - [ ] Title: Progress
+
+    - [ ] Completion percentage circle
+      - [ ] Show percentage of scheduled doses completed
+      - [ ] Respect current medicine and date filters
+
+    - [ ] Medicine legend
+      - [ ] Show medicine icon and title
+      - [ ] Display only medicines included in current filter
+
+    - [ ] Line chart
+      - [ ] Y-axis = doses completed
+      - [ ] X-axis adapts to selected period
+        - [ ] Month filter → days of month
+        - [ ] Year filter → months
+        - [ ] Lifetime filter → years
+      - [ ] Show one line per medicine
+      - [ ] Respect current filters
+
+  - [ ] Scheduled dose calculation
+    - [ ] Calculate expected doses using:
+      - [ ] start date
+      - [ ] optional end date
+      - [ ] reminder interval
+      - [ ] reminder unit
+    - [ ] Support:
+      - [ ] daily reminders
+      - [ ] weekly reminders
+      - [ ] monthly reminders
+    - [ ] Ignore dates before start date
+    - [ ] Ignore dates after end date
+    - [ ] Permanent medicines (no end date) continue indefinitely
+
+  - [ ] Achievements section
+    - [ ] Title: Achievements
+    - [ ] Achievement cards for medicine mastery
+
+    - [ ] General achievements
+      - [ ] First Dose
+      - [ ] 7-Day Streak
+      - [ ] 30-Day Streak
+      - [ ] 100% Monthly Consistency
+
+    - [ ] Type-specific achievements
+      - [ ] Pill Keeper
+      - [ ] Capsule Champion
+      - [ ] Injection Instructor
+      - [ ] Cream Captain
+      - [ ] Drop Doctor
+      - [ ] Inhaler Hero
+      - [ ] Liquid Legend
+      - [ ] Sachet Specialist
+      - [ ] Suppository Specialist
+      - [ ] Bandage Guardian
+      - [ ] IV Drip Master
+
+    - [ ] Unlock rules
+      - [ ] Based on total completed doses by medicine type
+      - [ ] Example thresholds:
+        - [ ] 10 doses
+        - [ ] 50 doses
+        - [ ] 100 doses
+
+    - [ ] Visual states
+      - [ ] Locked → low opacity
+      - [ ] Unlocked → full color
+
+  - [ ] Empty states
+    - [ ] No statistics available
+    - [ ] No data for selected filters
+    - [ ] No achievements unlocked yet
+
+  - [ ] Hard reset integration
+    - [ ] Delete all statistics
+    - [ ] Reset streaks
+    - [ ] Reset achievements
+
+  - [ ] Future enhancements
+    - [ ] Export statistics
+    - [ ] Share achievements
+    - [ ] Weekly reports
+    - [ ] Monthly reports
+    - [ ] Personalized insights

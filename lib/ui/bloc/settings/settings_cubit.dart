@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import '../../../domain/repo/medicine_repository.dart';
 import '../../../domain/usecases/settings_usecases.dart';
+import '../../../domain/usecases/statistics_usecases.dart';
 import '../medicine/medicine_cubit.dart';
 import 'settings_state.dart';
 
@@ -8,11 +9,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   final SettingsUseCases settingsUseCases;
   final MedicineRepository medicineRepo;
   final MedicineCubit medicineCubit;
+  final StatisticsUseCases statisticsUseCases;
 
   SettingsCubit({
     required this.settingsUseCases,
     required this.medicineRepo,
     required this.medicineCubit,
+    required this.statisticsUseCases,
   }) : super(SettingsState.initial());
 
   Future<void> load() async {
