@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.20.2
   path_provider: ^2.1.5
   fluttertoast: ^9.0.0
+  fl_chart: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
     - assets/imgs/
     - assets/imgs/introduction/
     - assets/imgs/pills/
+    - assets/imgs/achievements/
     - assets/fonts/
 
 

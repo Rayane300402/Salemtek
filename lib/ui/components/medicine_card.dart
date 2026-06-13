@@ -12,6 +12,7 @@ class MedicineCard extends StatefulWidget {
   final bool enableDelete;
   final VoidCallback onEdit;
   final VoidCallback? onComplete;
+  final VoidCallback? onSkip;
 
   const MedicineCard({
     super.key,
@@ -20,6 +21,7 @@ class MedicineCard extends StatefulWidget {
     required this.enableDelete,
     required this.onEdit,
     this.onComplete,
+    this.onSkip,
   });
 
   @override
@@ -359,6 +361,10 @@ class _MedicineCardState extends State<MedicineCard> {
                             widget.onComplete?.call();
                             break;
 
+                          case 'skip':
+                            widget.onSkip?.call();
+                            break;
+
                           case 'delete':
                             if (widget.enableDelete) {
                               context.read<MedicineCubit>().delete(
@@ -381,6 +387,12 @@ class _MedicineCardState extends State<MedicineCard> {
                             const PopupMenuItem<String>(
                               value: 'complete',
                               child: Text('Complete'),
+                            ),
+                          );
+                          items.add(
+                            const PopupMenuItem<String>(
+                              value: 'skip',
+                              child: Text('Skip'),
                             ),
                           );
                         }

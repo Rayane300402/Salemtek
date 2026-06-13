@@ -39,44 +39,42 @@ class StatisticsHeader extends StatelessWidget {
     }
   }
 
-  List<StatisticsTimeOption> _timeOptions() {
+  List<StatisticsTimeOption> _timeOptions(StatisticsState state) {
     final now = DateTime.now();
-    final options = <StatisticsTimeOption>[];
+    final currentMonth = DateTime(now.year, now.month);
 
-    if (now.month == 1) {
-      options.add(
+    // Which months / years actually have recorded statistics.
+    final monthsWithData = <DateTime>{};
+    final yearsWithData = <int>{};
+    for (final statistic in state.statistics) {
+      final date = statistic.actionDate;
+      monthsWithData.add(DateTime(date.year, date.month));
+      yearsWithData.add(date.year);
+    }
+
+    // Always offer the current month (default view); past months appear only
+    // when they actually have data.
+    final months = <DateTime>{currentMonth, ...monthsWithData}.toList()
+      ..sort((a, b) => b.compareTo(a));
+
+    final options = <StatisticsTimeOption>[
+      for (final date in months)
         StatisticsTimeOption(
-          type: StatisticsTimeFilterType.year,
-          date: DateTime(now.year),
-          label: '${now.year}',
+          type: StatisticsTimeFilterType.month,
+          date: date,
+          label: DateFormat('MMMM, yyyy').format(date),
         ),
-      );
+    ];
 
+    // Year options: the current year plus any year that has data.
+    final years = <int>{now.year, ...yearsWithData}.toList()
+      ..sort((a, b) => b.compareTo(a));
+    for (final year in years) {
       options.add(
         StatisticsTimeOption(
           type: StatisticsTimeFilterType.year,
-          date: DateTime(now.year - 1),
-          label: '${now.year - 1}',
-        ),
-      );
-    } else {
-      for (int month = now.month; month >= 1; month--) {
-        final date = DateTime(now.year, month);
-
-        options.add(
-          StatisticsTimeOption(
-            type: StatisticsTimeFilterType.month,
-            date: date,
-            label: DateFormat('MMMM, yyyy').format(date),
-          ),
-        );
-      }
-
-      options.add(
-        StatisticsTimeOption(
-          type: StatisticsTimeFilterType.year,
-          date: DateTime(now.year),
-          label: '${now.year}',
+          date: DateTime(year),
+          label: '$year',
         ),
       );
     }
@@ -149,7 +147,7 @@ class StatisticsHeader extends StatelessWidget {
                         );
                       },
                       itemBuilder: (context) {
-                        return _timeOptions()
+                        return _timeOptions(state)
                             .map(
                               (option) => PopupMenuItem<StatisticsTimeOption>(
                             value: option,

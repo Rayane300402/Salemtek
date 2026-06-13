@@ -6,6 +6,9 @@ import '../../../bloc/medicine/medicine_cubit.dart';
 import '../../../bloc/medicine/medicine_state.dart';
 import '../../../bloc/statistics/statistics_cubit.dart';
 import '../../../bloc/statistics/statistics_state.dart';
+import '../../../components/empty_state.dart';
+import 'components/achievements_section.dart';
+import 'components/progress_chart.dart';
 import 'components/progress_section.dart';
 import 'components/statistics_header.dart';
 import 'components/summary_card.dart';
@@ -41,42 +44,64 @@ class Statistics extends StatelessWidget {
                 ),
                 child: BlocBuilder<StatisticsCubit, StatisticsState>(
                   builder: (context, state) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                    return BlocBuilder<MedicineCubit, MedicineState>(
+                      builder: (context, medicineState) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: SummaryCard(
-                                value: '${state.streak}',
-                                label: 'Streak',
-                                color: Palette.navIcon,
+                            if (state.hasNoData)
+                              const EmptyState(
+                                title: 'No statistics yet',
+                                message:
+                                    'Complete or skip a medicine on the home '
+                                    'page to start tracking your progress.',
+                              )
+                            else ...[
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: SummaryCard(
+                                      value: '${state.streak}',
+                                      label: 'Streak',
+                                      color: Palette.navIcon,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: SummaryCard(
+                                      value:
+                                          '${state.consistency.toStringAsFixed(0)}%',
+                                      label: 'Consistency',
+                                      color: Palette.primary,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
 
-                            const SizedBox(width: 20),
+                              const SizedBox(height: 35),
 
-                            Expanded(
-                              child: SummaryCard(
-                                value: '${state.consistency.toStringAsFixed(0)}%',
-                                label: 'Consistency',
-                                color: Palette.primary,
+                              ProgressSection(
+                                percentage: state.consistency,
+                                medicines: medicineState.medicines,
                               ),
+
+                              const SizedBox(height: 28),
+
+                              ProgressChart(
+                                data: state.chartData,
+                                medicines: medicineState.medicines,
+                                timeFilterType: state.timeFilterType,
+                              ),
+                            ],
+
+                            const SizedBox(height: 40),
+
+                            AchievementsSection(
+                              achievements: state.achievements,
                             ),
                           ],
-                        ),
-
-                        const SizedBox(height: 35),
-
-                        BlocBuilder<MedicineCubit, MedicineState>(
-                          builder: (context, medicineState) {
-                            return ProgressSection(
-                              percentage: state.consistency,
-                              medicines: medicineState.medicines,
-                            );
-                          },
-                        ),
-                      ],
+                        );
+                      },
                     );
                   },
                 ),
@@ -84,8 +109,6 @@ class Statistics extends StatelessWidget {
             ),
           ),
         ),
-
-
       ],
     );
   }

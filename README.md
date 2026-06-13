@@ -306,14 +306,14 @@ Will provide a web view to see its full design without needing to set up here:
     - [x] Create statistics repository
     - [x] Create statistics use cases
 
-  - [ ] Statistics Cubit
+  - [x] Statistics Cubit
     - [x] Load statistics
     - [x] Apply filters
     - [x] Compute summary values
-    - [ ] Compute chart data
-    - [ ] Compute achievements
+    - [x] Compute chart data
+    - [x] Compute achievements
 
-  - [ ] Header filters
+  - [x] Header filters
     - [x] Medicine filter dropdown
       - [x] All medicines
       - [x] Optional future filter by medicine type
@@ -321,20 +321,22 @@ Will provide a web view to see its full design without needing to set up here:
       - [x] Specific month and year
       - [x] Entire year
       - [x] Lifetime
+      - [x] Only list past months that have data
     - [x] Refresh button
       - [x] Recalculate statistics
 
-  - [ ] Summary cards
-    - [ ] Streak
-      - [ ] Number of consecutive days with at least one completed medicine
-      - [ ] Reset when a day has no completed medicines
-    - [ ] Consistency
-      - [ ] Percentage of completed scheduled doses
-      - [ ] Formula:
-        - [ ] completed doses / total scheduled doses × 100
+  - [x] Summary cards
+    - [x] Streak
+      - [x] Number of consecutive days with at least one completed medicine
+      - [x] Reset when a day has no completed medicines
+    - [x] Consistency (action-based for now)
+      - [x] Percentage of completed actions
+      - [x] Formula:
+        - [x] completed doses / (completed + skipped) × 100
+        - [ ] scheduled-based formula later (needs scheduled-dose calc)
 
   - [ ] Progress section
-    - x ] Title: Progress
+    - [x] Title: Progress
 
     - [x] Progress overview container
       - [x] Horizontal layout
@@ -342,89 +344,92 @@ Will provide a web view to see its full design without needing to set up here:
       - [x] Holds circle + medicine legend
       - [x] Prevent full-height expansion
 
-    - [ ] Completion percentage circle
-      - [ ] Show percentage of scheduled doses completed
-      - [ ] Respect current medicine and date filters
+    - [x] Completion percentage circle
+      - [x] Show completion percentage (action-based)
+      - [x] Respect current medicine and date filters
       - [ ] Animated percentage later
-      - [ ] Future chart ring support
+      - [x] Progress ring around the circle
 
-    - [ ] Medicine legend
+    - [x] Medicine legend
       - [x] Show medicine icon and title
       - [x] Display only medicines included in current filter
       - [x] Scrollable vertical list
       - [x] Fixed max height
       - [ ] Custom scrollbar styling later
 
-    - [ ] Progress chart section
-      - [ ] Add line chart under overview container later
+    - [x] Progress chart section
+      - [x] Add `fl_chart` package
+      - [x] Create progress line chart component
+      - [x] Show one line per medicine/type
+      - [x] X-axis adapts to selected period
+        - [x] Month → days
+        - [x] Year → months
+        - [x] Lifetime → years
+      - [x] Y-axis = doses completed
+      - [x] Respect current filters
 
-    - [ ] Scheduled dose calculation
-      - [ ] Calculate expected doses using:
-        - [ ] start date
-        - [ ] optional end date
-        - [ ] reminder interval
-        - [ ] reminder unit
-      - [ ] Support:
-        - [ ] daily reminders
-        - [ ] weekly reminders
-        - [ ] monthly reminders
-      - [ ] Ignore dates before start date
-      - [ ] Ignore dates after end date
-      - [ ] Permanent medicines (no end date) continue indefinitely
+    - [x] Dose tracking — action-based (current approach)
+      - [x] Count recorded actions instead of computing a schedule
+      - [x] Each Complete / Skip on Home writes one statistic record
+      - [x] Consistency = completed / (completed + skipped)
+      - [x] Chart Y-axis = completed records per period bucket
+      - [ ] Scheduled-dose calculation (future — for a true adherence %)
+        - [ ] Expected doses from start/end date + reminder interval + unit
+        - [ ] Daily / weekly / monthly reminders
+        - [ ] Ignore dates outside the active range; permanent meds continue indefinitely
 
-    - [ ] Achievements section
-      - [ ] Title: Achievements
-      - [ ] Achievement cards for medicine mastery
+    - [x] Achievements section
+      - [x] Title: Achievements
+      - [x] Achievement cards for medicine mastery
 
-      - [ ] General achievements
-        - [ ] First Dose
-        - [ ] 7-Day Streak
-        - [ ] 30-Day Streak
-        - [ ] 100% Monthly Consistency
+      - [x] Type-specific achievements — all 11 MedicineTypes (art ✓)
+        - [x] Pill Keeper — pill
+        - [x] Capsule Guardian — capsule
+        - [x] Injection Inspector — injection
+        - [x] Cream Captain — cream
+        - [x] Liquid Legend — liquid
+        - [x] Sachet Specialist — powder
+        - [x] Puff Pro — inhaler
+        - [x] Bandage King — bandage
+        - [x] Drip Master — drip (IV Drip)
+        - [x] Drop Doctor — drop
+        - [x] Suppository Sentinel — suppository
 
-      - [ ] Type-specific achievements
-        - [ ] Pill Keeper
-        - [ ] Capsule Champion
-        - [ ] Injection Instructor
-        - [ ] Cream Captain
-        - [ ] Drop Doctor
-        - [ ] Inhaler Hero
-        - [ ] Liquid Legend
-        - [ ] Sachet Specialist
-        - [ ] Suppository Specialist
-        - [ ] Bandage Guardian
-        - [ ] IV Drip Master
+      - [x] General / secret achievements
+        - [x] Healer — secret · unlocks at more than 5 different medicine types · hidden until earned
+        - [ ] First Dose (future)
+        - [ ] 7-Day Streak (future)
+        - [ ] 30-Day Streak (future)
+        - [ ] 100% Monthly Consistency (future)
 
-      - [ ] Unlock rules
-        - [ ] Based on total completed doses by medicine type
-        - [ ] Example thresholds:
-          - [ ] 10 doses
-          - [ ] 50 doses
-          - [ ] 100 doses
+      - [x] Unlock rules
+        - [x] Type achievements: more than 20 completions of that type (times taken — not pills/dosage)
+        - [x] Healer: more than 5 different medicine types
+        - [ ] Multi-tier thresholds later (10 / 50 / 100)
 
-      - [ ] Visual states
-        - [ ] Locked → low opacity
-        - [ ] Unlocked → full color
-      
-    - [ ] Statistics action recording
-      - [ ] Record completed medicine actions
-      - [ ] Record skipped medicine actions
-      - [ ] Create statistic entry from Home page interactions
-      - [ ] Refresh statistics automatically after action
-      - [ ] Prevent duplicate records for same medicine/date/action
-      - [ ] Future:
-        - [ ] allow editing action status
-        - [ ] allow removing mistaken records
+      - [x] Visual states
+        - [x] Locked → hidden (not shown — keeps the full set a surprise)
+        - [x] Unlocked → full color
 
-    - [ ] Empty states
-      - [ ] No statistics available
-      - [ ] No data for selected filters
-      - [ ] No achievements unlocked yet
+      - [x] Statistics action recording
+        - [x] Record completed medicine actions
+        - [x] Record skipped medicine actions
+        - [x] Create statistic entry from Home page interactions
+        - [x] Refresh statistics automatically after action
+        - [x] Prevent duplicate records for same medicine/date/action
+        - [ ] Future:
+          - [ ] allow editing action status
+          - [ ] allow removing mistaken records
 
-    - [ ] Hard reset integration
-      - [ ] Delete all statistics
-      - [ ] Reset streaks
-      - [ ] Reset achievements
+      - [x] Empty states
+        - [x] No statistics available
+        - [x] No data for selected filters
+        - [x] No achievements unlocked yet
+
+    - [x] Hard reset integration
+      - [x] Delete all statistics
+      - [x] Reset streaks
+      - [x] Reset achievements
 
     - [ ] Future enhancements
       - [ ] Export statistics

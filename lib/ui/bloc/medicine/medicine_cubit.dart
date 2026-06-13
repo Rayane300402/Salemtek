@@ -102,7 +102,25 @@ class MedicineCubit extends Cubit<MedicineState> {
     emit(state.copyWith(completedKeys: updated));
   }
 
+  void markSkippedForDate(String medicineId, DateTime date) {
+    final updated = Set<String>.from(state.skippedKeys)
+      ..add(_completionKey(medicineId, date));
+
+    emit(state.copyWith(skippedKeys: updated));
+  }
+
   bool isCompletedForDate(String medicineId, DateTime date) {
     return state.completedKeys.contains(_completionKey(medicineId, date));
+  }
+
+  bool isSkippedForDate(String medicineId, DateTime date) {
+    return state.skippedKeys.contains(_completionKey(medicineId, date));
+  }
+
+  /// True once a medicine has been completed or skipped for [date], so the home
+  /// list can stop showing it.
+  bool isHandledForDate(String medicineId, DateTime date) {
+    return isCompletedForDate(medicineId, date) ||
+        isSkippedForDate(medicineId, date);
   }
 }

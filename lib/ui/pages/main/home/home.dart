@@ -6,9 +6,12 @@ import 'package:salemtek/ui/pages/main/home/components/calendar/bloc/calendar_lo
 
 import '../../../../configs/theme/palette.dart';
 import '../../../../domain/entities/medicine.dart';
+import '../../../../domain/entities/statistic_action_type.dart';
 import '../../../bloc/medicine/medicine_cubit.dart';
 import '../../../bloc/medicine/medicine_state.dart';
+import '../../../bloc/statistics/statistics_cubit.dart';
 import '../../../components/custom_header.dart';
+import '../../../components/empty_state.dart';
 import '../../../components/medicine_card.dart';
 import '../create_edit/create_edit_medicine.dart';
 import '../home/components/calendar/calendar.dart';
@@ -93,7 +96,7 @@ class Home extends StatelessWidget {
                             .where(
                               (medicine) => !context
                                   .read<MedicineCubit>()
-                                  .isCompletedForDate(
+                                  .isHandledForDate(
                                     medicine.id,
                                     selectedDate,
                                   ),
@@ -104,9 +107,8 @@ class Home extends StatelessWidget {
                           return SizedBox(
                             height: MediaQuery.of(context).size.height * 0.5,
                             child: const Center(
-                              child: Text(
-                                'No medicines for this date',
-                                style: TextStyle(fontWeight: FontWeight.w500),
+                              child: EmptyState(
+                                title: 'No medicines for this date',
                               ),
                             ),
                           );
@@ -134,7 +136,37 @@ class Home extends StatelessWidget {
                                         selectedDate,
                                       );
 
+                                  context.read<StatisticsCubit>().record(
+                                        medicineId: medicine.id,
+                                        medicineType: medicine.type,
+                                        dosageAmount: medicine.dosageAmount,
+                                        actionType:
+                                            StatisticActionType.completed,
+                                        date: selectedDate,
+                                      );
+
                                   GlobalToast.show('Medicine Completed');
+                                },
+                                onSkip: () {
+                                  context
+                                      .read<MedicineCubit>()
+                                      .markSkippedForDate(
+                                        medicine.id,
+                                        selectedDate,
+                                      );
+
+                                  context.read<StatisticsCubit>().record(
+                                        medicineId: medicine.id,
+                                        medicineType: medicine.type,
+                                        dosageAmount: medicine.dosageAmount,
+                                        actionType: StatisticActionType.skipped,
+                                        date: selectedDate,
+                                      );
+
+                                  GlobalToast.show(
+                                    'Medicine Skipped',
+                                    isNegative: true,
+                                  );
                                 },
                               ),
                             );

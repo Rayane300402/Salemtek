@@ -7,6 +7,7 @@ import '../../../../domain/entities/medicine.dart';
 import '../../../bloc/medicine/medicine_cubit.dart';
 import '../../../bloc/medicine/medicine_state.dart';
 import '../../../components/custom_header.dart';
+import '../../../components/empty_state.dart';
 import '../../../components/medicine_card.dart';
 
 class Cabinet extends StatefulWidget {
@@ -152,13 +153,13 @@ class _CabinetState extends State<Cabinet> {
                         return SizedBox(
                           height: MediaQuery.of(context).size.height * 0.45,
                           child: Center(
-                            child: Text(
-                              _searchController.text.trim().isEmpty
+                            child: EmptyState(
+                              title: _searchController.text.trim().isEmpty
                                   ? 'No medicines yet'
                                   : 'No medicines found',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
+                              message: _searchController.text.trim().isEmpty
+                                  ? 'Tap + to add your first medicine.'
+                                  : 'Try a different search.',
                             ),
                           ),
                         );

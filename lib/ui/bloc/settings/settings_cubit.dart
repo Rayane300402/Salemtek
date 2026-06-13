@@ -3,6 +3,7 @@ import '../../../domain/repo/medicine_repository.dart';
 import '../../../domain/usecases/settings_usecases.dart';
 import '../../../domain/usecases/statistics_usecases.dart';
 import '../medicine/medicine_cubit.dart';
+import '../statistics/statistics_cubit.dart';
 import 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
@@ -10,12 +11,14 @@ class SettingsCubit extends Cubit<SettingsState> {
   final MedicineRepository medicineRepo;
   final MedicineCubit medicineCubit;
   final StatisticsUseCases statisticsUseCases;
+  final StatisticsCubit statisticsCubit;
 
   SettingsCubit({
     required this.settingsUseCases,
     required this.medicineRepo,
     required this.medicineCubit,
     required this.statisticsUseCases,
+    required this.statisticsCubit,
   }) : super(SettingsState.initial());
 
   Future<void> load() async {
@@ -77,8 +80,10 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   Future<void> hardReset() async {
     await medicineRepo.hardDeleteAllMedicines();
+    await statisticsUseCases.clearAll();
     await settingsUseCases.reset();
     await medicineCubit.load();
+    await statisticsCubit.load();
 
     final resetSettings = await settingsUseCases.get();
     emit(state.copyWith(

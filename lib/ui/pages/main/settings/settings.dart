@@ -21,7 +21,7 @@ class Settings extends StatelessWidget {
         return AlertDialog(
           title: const Text('Hard Reset'),
           content: const Text(
-            'This will permanently delete all medicines and reset settings. This cannot be undone.',
+            'This will permanently delete all medicines and statistics, and reset settings. This cannot be undone.',
           ),
           actions: [
             TextButton(
@@ -157,7 +157,7 @@ class _DataSettingsView extends StatelessWidget {
         const SizedBox(height: 15),
         SettingsButton(
           title: 'Hard Reset',
-          subtitle: 'permanently clear all medicines and reset settings',
+          subtitle: 'permanently clear all medicines, statistics and settings',
           icon: Icons.delete_forever,
           onTap: onHardReset,
         ),

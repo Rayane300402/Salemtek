@@ -70,6 +70,7 @@ Future<void> initServiceLocator() async {
       medicineRepo: sl(),
       medicineCubit: sl<MedicineCubit>(),
       statisticsUseCases: sl(),
+      statisticsCubit: sl<StatisticsCubit>(),
     )..load(),
   );
 
