@@ -60,33 +60,28 @@ class _MedicineCardState extends State<MedicineCard> {
     setState(() {
       _dragOffset += details.delta.dx;
 
-      // 🚫 Block right swipe if delete disabled
       if (!widget.enableDelete && _dragOffset > 0) {
         _dragOffset = 0;
       }
 
-      // Clamp values
       if (_dragOffset > _triggerSlide) _dragOffset = _triggerSlide;
       if (_dragOffset < -_triggerSlide) _dragOffset = -_triggerSlide;
     });
   }
 
   void _handleDragEnd(DragEndDetails details) {
-    // DELETE (full swipe executes)
     if (_dragOffset >= _triggerSlide && widget.enableDelete) {
       context.read<MedicineCubit>().delete(widget.medicine.id);
       setState(() => _dragOffset = 0);
       return;
     }
 
-    // COMPLETE (full swipe executes)
     if (_dragOffset <= -_triggerSlide && widget.showCompleteAction) {
       widget.onComplete?.call();
       setState(() => _dragOffset = 0);
       return;
     }
 
-    // 🟡 EDIT (full swipe DOES NOT execute)
     if (_dragOffset <= -_triggerSlide && !widget.showCompleteAction) {
       setState(() => _dragOffset = -_maxSlide);
       return;

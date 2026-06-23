@@ -120,31 +120,35 @@ class MedicineModel {
     );
   }
 
-  factory MedicineModel.fromJson(Map<String, dynamic> json) {
+  factory MedicineModel.fromMap(Map<String, Object?> map) {
     return MedicineModel(
-      id: json['id'] as String,
-      type: MedicineType.values.byName(json['type'] as String),
-      title: json['title'] as String,
-      dosageAmount: json['dosageAmount'] as int,
-      dosageSingular: json['dosageSingular'] as String,
-      dosagePlural: json['dosagePlural'] as String,
-      reason: json['reason'] as String?,
-      hasNotification: json['hasNotification'] as bool,
-      reminderEvery: json['reminderEvery'] as int,
-      reminderUnit: ReminderUnit.values.byName(json['reminderUnit'] as String),
-      startDate: DateTime.parse(json['startDate'] as String),
-      endDate: json['endDate'] != null
-          ? DateTime.parse(json['endDate'] as String)
-          : null,
-      dateCreated: DateTime.parse(json['dateCreated'] as String),
-      dateDeleted: json['dateDeleted'] != null
-          ? DateTime.parse(json['dateDeleted'] as String)
-          : null,
-      dateModified: DateTime.parse(json['dateModified'] as String),
+      id: map['id'] as String,
+      type: MedicineType.values.byName(map['type'] as String),
+      title: map['title'] as String,
+      dosageAmount: map['dosageAmount'] as int,
+      dosageSingular: map['dosageSingular'] as String,
+      dosagePlural: map['dosagePlural'] as String,
+      reason: map['reason'] as String?,
+      hasNotification: (map['hasNotification'] as int) == 1,
+      reminderEvery: map['reminderEvery'] as int,
+      reminderUnit: ReminderUnit.values.byName(map['reminderUnit'] as String),
+      startDate: DateTime.fromMillisecondsSinceEpoch(map['startDate'] as int),
+      endDate: map['endDate'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(map['endDate'] as int),
+      dateCreated: DateTime.fromMillisecondsSinceEpoch(
+        map['dateCreated'] as int,
+      ),
+      dateDeleted: map['dateDeleted'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(map['dateDeleted'] as int),
+      dateModified: DateTime.fromMillisecondsSinceEpoch(
+        map['dateModified'] as int,
+      ),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toMap() {
     return {
       'id': id,
       'type': type.name,
@@ -153,14 +157,14 @@ class MedicineModel {
       'dosageSingular': dosageSingular,
       'dosagePlural': dosagePlural,
       'reason': reason,
-      'hasNotification': hasNotification,
+      'hasNotification': hasNotification ? 1 : 0,
       'reminderEvery': reminderEvery,
       'reminderUnit': reminderUnit.name,
-      'startDate': startDate.toIso8601String(),
-      'endDate': endDate?.toIso8601String(),
-      'dateCreated': dateCreated.toIso8601String(),
-      'dateDeleted': dateDeleted?.toIso8601String(),
-      'dateModified': dateModified.toIso8601String(),
+      'startDate': startDate.millisecondsSinceEpoch,
+      'endDate': endDate?.millisecondsSinceEpoch,
+      'dateCreated': dateCreated.millisecondsSinceEpoch,
+      'dateDeleted': dateDeleted?.millisecondsSinceEpoch,
+      'dateModified': dateModified.millisecondsSinceEpoch,
     };
   }
 }

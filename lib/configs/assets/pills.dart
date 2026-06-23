@@ -2,7 +2,6 @@ class Pills {
   static const String basePath = 'assets/imgs/';
   static const String pillPath = 'pills';
 
-  // Pills Images
   static const String bandage = '$basePath$pillPath/bandage.png';
   static const String capsule = '$basePath$pillPath/capsule.png';
   static const String cream = '$basePath$pillPath/cream.png';

@@ -2,8 +2,6 @@ import 'package:salemtek/configs/assets/images.dart';
 import '../../../../domain/entities/introduction.dart';
 
 
-/// Central intro content.
-/// IntroPage will import this and build UI from it.
 final List<IntroductionEntity> introData = [
   IntroductionEntity(
     title: 'Your pocket med\ncabinet',

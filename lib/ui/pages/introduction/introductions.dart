@@ -60,7 +60,7 @@ class _IntroPageState extends State<IntroPage> {
                       children: [
                         IntroductionText(title: page.title, subtitle: page.subtitle),
 
-                        const SizedBox(height: 14), // ✅ controls closeness
+                        const SizedBox(height: 14),
 
                         IntroductionPagination(
                           count: introData.length,

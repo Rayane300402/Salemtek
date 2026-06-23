@@ -1,7 +1,5 @@
 import '../../../domain/entities/medicine_type.dart';
 
-/// One line on the progress chart: completed-dose counts per x-axis bucket
-/// for a single medicine.
 class StatChartSeries {
   final String medicineId;
   final MedicineType medicineType;
@@ -14,9 +12,6 @@ class StatChartSeries {
   });
 }
 
-/// Derived progress-chart data. [xLabels] are the bucket labels (days, months
-/// or years depending on the active time filter); each [series] has one value
-/// per bucket.
 class StatChartData {
   final List<String> xLabels;
   final List<StatChartSeries> series;

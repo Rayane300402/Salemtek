@@ -41,4 +41,20 @@ class SettingsModel {
       excessiveReminderMinutes ?? this.excessiveReminderMinutes,
     );
   }
+
+  factory SettingsModel.fromMap(Map<String, Object?> map) {
+    return SettingsModel(
+      notificationsEnabled: (map['notificationsEnabled'] as int) == 1,
+      excessiveRemindersEnabled: (map['excessiveRemindersEnabled'] as int) == 1,
+      excessiveReminderMinutes: map['excessiveReminderMinutes'] as int,
+    );
+  }
+
+  Map<String, Object?> toMap() {
+    return {
+      'notificationsEnabled': notificationsEnabled ? 1 : 0,
+      'excessiveRemindersEnabled': excessiveRemindersEnabled ? 1 : 0,
+      'excessiveReminderMinutes': excessiveReminderMinutes,
+    };
+  }
 }

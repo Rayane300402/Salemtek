@@ -43,7 +43,6 @@ class StatisticsHeader extends StatelessWidget {
     final now = DateTime.now();
     final currentMonth = DateTime(now.year, now.month);
 
-    // Which months / years actually have recorded statistics.
     final monthsWithData = <DateTime>{};
     final yearsWithData = <int>{};
     for (final statistic in state.statistics) {
@@ -52,8 +51,6 @@ class StatisticsHeader extends StatelessWidget {
       yearsWithData.add(date.year);
     }
 
-    // Always offer the current month (default view); past months appear only
-    // when they actually have data.
     final months = <DateTime>{currentMonth, ...monthsWithData}.toList()
       ..sort((a, b) => b.compareTo(a));
 
@@ -66,7 +63,6 @@ class StatisticsHeader extends StatelessWidget {
         ),
     ];
 
-    // Year options: the current year plus any year that has data.
     final years = <int>{now.year, ...yearsWithData}.toList()
       ..sort((a, b) => b.compareTo(a));
     for (final year in years) {

@@ -2,7 +2,6 @@ class Images {
   static const String basePath = 'assets/imgs/';
   static const String introductionPath = 'introduction';
 
-  // Introduction Images
   static const String introLayout =
       '$basePath$introductionPath/layout.png';
 

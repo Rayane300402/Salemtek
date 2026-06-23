@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../configs/theme/palette.dart';
 
-/// Reusable centered empty-state block: a bold [title] with an optional
-/// supporting [message]. Used for "no statistics", "no medicines", etc.
 class EmptyState extends StatelessWidget {
   final String title;
   final String? message;

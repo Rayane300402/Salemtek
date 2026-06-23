@@ -27,14 +27,12 @@ class IntroductionLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
 
-    // Controls how big the square is relative to screen width.
-    // Tune this number until it matches your mock.
     final side = size.width;
 
     final specs = _specsForPage(pageIndex);
 
     return Stack(
-      clipBehavior: Clip.hardEdge, // IMPORTANT: keep things inside while tuning
+      clipBehavior: Clip.hardEdge,
       children: [
         Positioned.fill(
           child: Container(
@@ -45,7 +43,7 @@ class IntroductionLayout extends StatelessWidget {
             ),
             child: Image.asset(
               Images.introLayout,
-              fit: BoxFit.cover, // ✅ fill the box cleanly
+              fit: BoxFit.cover,
               alignment: Alignment.topCenter,
             ),
           ),
@@ -67,7 +65,6 @@ class IntroductionLayout extends StatelessWidget {
   }
 }
 
-/// Placement spec for a single floating image.
 class _ImageSpec {
   final Alignment alignment;
 
@@ -115,16 +112,8 @@ class _PlacedImage extends StatelessWidget {
   }
 }
 
-/// Per-page layout presets tuned to your screenshot.
-/// Each list contains 3 specs:
-/// 0 = "top" image
-/// 1 = "middle" image
-/// 2 = "bottom" image
 List<_ImageSpec> _specsForPage(int pageIndex) {
   switch (pageIndex) {
-    // =========================
-    // PAGE 1 (pill bottle top-right, container left, cream bottom-right)
-    // =========================
     case 0:
       return const [
         _ImageSpec(
@@ -150,9 +139,6 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
         ),
       ];
 
-    // =========================
-    // PAGE 2 (cream top-left, pill top-right, container bottom-left)
-    // =========================
     case 1:
       return const [
         _ImageSpec(
@@ -178,9 +164,6 @@ List<_ImageSpec> _specsForPage(int pageIndex) {
         ),
       ];
 
-    // =========================
-    // PAGE 3 (drip top-right, medicine cluster left, bottle bottom-right)
-    // =========================
     case 2:
     default:
       return const [

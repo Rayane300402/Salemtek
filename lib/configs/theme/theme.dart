@@ -8,7 +8,6 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(seedColor: Palette.primary),
     );
 
-    // Force Poppins onto *every* text style in the theme.
     final poppinsTextTheme = base.textTheme.apply(
       fontFamily: 'Poppins',
       bodyColor: Palette.text,

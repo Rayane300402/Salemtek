@@ -1,3 +1,6 @@
+import 'package:sqflite/sqflite.dart';
+
+import '../local/database_schema.dart';
 import '../models/settings_model.dart';
 
 abstract class SettingsLocalDataSource {
@@ -7,30 +10,46 @@ abstract class SettingsLocalDataSource {
 }
 
 class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
-  SettingsModel _settings = const SettingsModel(
+  final Database db;
+
+  SettingsLocalDataSourceImpl(this.db);
+
+  static const _defaults = SettingsModel(
     notificationsEnabled: true,
     excessiveRemindersEnabled: false,
     excessiveReminderMinutes: 10,
   );
 
+  Future<SettingsModel> _save(SettingsModel settings) async {
+    await db.insert(
+      DbTables.settings,
+      {...settings.toMap(), 'id': settingsRowId},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    return settings;
+  }
+
   @override
   Future<SettingsModel> getSettings() async {
-    return _settings;
-  }
-
-  @override
-  Future<SettingsModel> updateSettings(SettingsModel settings) async {
-    _settings = settings;
-    return _settings;
-  }
-
-  @override
-  Future<SettingsModel> resetSettings() async {
-    _settings = const SettingsModel(
-      notificationsEnabled: true,
-      excessiveRemindersEnabled: false,
-      excessiveReminderMinutes: 10,
+    final rows = await db.query(
+      DbTables.settings,
+      where: 'id = ?',
+      whereArgs: [settingsRowId],
+      limit: 1,
     );
-    return _settings;
+    if (rows.isEmpty) {
+      return _save(_defaults);
+    }
+    return SettingsModel.fromMap(rows.first);
+  }
+
+  @override
+  Future<SettingsModel> updateSettings(SettingsModel settings) {
+    return _save(settings);
+  }
+
+  @override
+  Future<SettingsModel> resetSettings() {
+    return _save(_defaults);
   }
 }

@@ -18,7 +18,7 @@ class IntroductionPagination extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start, // matches your screenshot
+      mainAxisAlignment: MainAxisAlignment.start,
       children: List.generate(count, (i) {
         final isActive = i == index;
         final asset = isActive ? Images.pillCurrentPage : Images.pillPage;
@@ -29,7 +29,6 @@ class IntroductionPagination extends StatelessWidget {
             onTap: onTap == null ? null : () => onTap!(i),
             behavior: HitTestBehavior.translucent,
             child: AnimatedScale(
-              // Later: swap this for a custom animation (bounce/wiggle/slide)
               duration: const Duration(milliseconds: 180),
               curve: Curves.easeOut,
               scale:  1.0,

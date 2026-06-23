@@ -1,5 +1,6 @@
-import '../../domain/entities/medicine_type.dart';
-import '../../domain/entities/reminder.dart';
+import 'package:sqflite/sqflite.dart';
+
+import '../local/database_schema.dart';
 import '../models/medicine_model.dart';
 
 abstract class MedicineLocalDataSource {
@@ -13,126 +14,88 @@ abstract class MedicineLocalDataSource {
 }
 
 class MedicineLocalDataSourceImpl implements MedicineLocalDataSource {
-  final List<MedicineModel> _medicines = [
-    MedicineModel(
-      id: '1',
-      type: MedicineType.capsule,
-      title: 'Benzonatate',
-      dosageAmount: 1,
-      dosageSingular: 'capsule',
-      dosagePlural: 'capsules',
-      reason: 'Cough',
-      hasNotification: true,
-      reminderEvery: 1,
-      reminderUnit: ReminderUnit.day,
-      startDate: DateTime(2026, 4, 19),
-      endDate: DateTime(2026, 5, 19),
-      dateCreated: DateTime.now(),
-      dateDeleted: null,
-      dateModified: DateTime.now(),
-    ),
-    MedicineModel(
-      id: '2',
-      type: MedicineType.pill,
-      title: 'Loratadine',
-      dosageAmount: 2,
-      dosageSingular: 'pill',
-      dosagePlural: 'pills',
-      reason: 'Allergy',
-      hasNotification: true,
-      reminderEvery: 4,
-      reminderUnit: ReminderUnit.day,
-      startDate: DateTime(2026, 4, 19),
-      endDate: null,
-      dateCreated: DateTime.now(),
-      dateDeleted: null,
-      dateModified: DateTime.now(),
-    ),
-    MedicineModel(
-      id: '3',
-      type: MedicineType.injection,
-      title: 'Liraglutide',
-      dosageAmount: 1,
-      dosageSingular: 'injection',
-      dosagePlural: 'injections',
-      reason: null,
-      hasNotification: true,
-      reminderEvery: 4,
-      reminderUnit: ReminderUnit.month,
-      startDate: DateTime(2026, 4, 20),
-      endDate: null,
-      dateCreated: DateTime.now(),
-      dateDeleted: null,
-      dateModified: DateTime.now(),
-    ),
-  ];
+  final Database db;
+
+  MedicineLocalDataSourceImpl(this.db);
+
   @override
   Future<List<MedicineModel>> getAllMedicines({
     bool includeDeleted = false,
   }) async {
-    return includeDeleted
-        ? List<MedicineModel>.from(_medicines)
-        : _medicines.where((m) => m.dateDeleted == null).toList();
+    final rows = await db.query(
+      DbTables.medicines,
+      where: includeDeleted ? null : 'dateDeleted IS NULL',
+      orderBy: 'dateCreated DESC',
+    );
+    return rows.map(MedicineModel.fromMap).toList();
   }
 
   @override
   Future<MedicineModel> addMedicine(MedicineModel medicine) async {
-    _medicines.add(medicine);
+    await db.insert(
+      DbTables.medicines,
+      medicine.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
     return medicine;
   }
 
   @override
   Future<MedicineModel> updateMedicine(MedicineModel medicine) async {
-    final index = _medicines.indexWhere((m) => m.id == medicine.id);
-    if (index == -1) {
+    final count = await db.update(
+      DbTables.medicines,
+      medicine.toMap(),
+      where: 'id = ?',
+      whereArgs: [medicine.id],
+    );
+    if (count == 0) {
       throw Exception('Medicine not found');
     }
-    _medicines[index] = medicine;
     return medicine;
   }
 
   @override
   Future<void> deleteMedicine(String id, {bool softDelete = true}) async {
-    final index = _medicines.indexWhere((m) => m.id == id);
-    if (index == -1) return;
-
     if (softDelete) {
-      _medicines[index] = _medicines[index].copyWith(
-        dateDeleted: DateTime.now(),
-        dateModified: DateTime.now(),
+      final now = DateTime.now().millisecondsSinceEpoch;
+      await db.update(
+        DbTables.medicines,
+        {'dateDeleted': now, 'dateModified': now},
+        where: 'id = ?',
+        whereArgs: [id],
       );
     } else {
-      _medicines.removeAt(index);
+      await db.delete(DbTables.medicines, where: 'id = ?', whereArgs: [id]);
     }
   }
 
   @override
   Future<void> restoreMedicine(String id) async {
-    final index = _medicines.indexWhere((m) => m.id == id);
-    if (index == -1) return;
-
-    _medicines[index] = _medicines[index].copyWith(
-      clearDateDeleted: true,
-      dateModified: DateTime.now(),
+    await db.update(
+      DbTables.medicines,
+      {
+        'dateDeleted': null,
+        'dateModified': DateTime.now().millisecondsSinceEpoch,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 
   @override
   Future<void> restoreAllMedicines() async {
-    for (var i = 0; i < _medicines.length; i++) {
-      if (_medicines[i].dateDeleted != null) {
-        _medicines[i] = _medicines[i].copyWith(
-          clearDateDeleted: true,
-          dateModified: DateTime.now(),
-        );
-      }
-    }
+    await db.update(
+      DbTables.medicines,
+      {
+        'dateDeleted': null,
+        'dateModified': DateTime.now().millisecondsSinceEpoch,
+      },
+      where: 'dateDeleted IS NOT NULL',
+    );
   }
 
   @override
   Future<void> hardDeleteAllMedicines() async {
-    _medicines.clear();
+    await db.delete(DbTables.medicines);
   }
-
-
 }

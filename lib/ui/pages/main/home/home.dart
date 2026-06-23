@@ -10,6 +10,7 @@ import '../../../../domain/entities/statistic_action_type.dart';
 import '../../../bloc/medicine/medicine_cubit.dart';
 import '../../../bloc/medicine/medicine_state.dart';
 import '../../../bloc/statistics/statistics_cubit.dart';
+import '../../../bloc/statistics/statistics_state.dart';
 import '../../../components/custom_header.dart';
 import '../../../components/empty_state.dart';
 import '../../../components/medicine_card.dart';
@@ -91,52 +92,46 @@ class Home extends StatelessWidget {
                           );
                         }
 
-                        final dueMedicines = state.medicines
-                            .where((medicine) => medicine.isDueOn(selectedDate))
-                            .where(
-                              (medicine) => !context
-                                  .read<MedicineCubit>()
-                                  .isHandledForDate(
-                                    medicine.id,
+                        return BlocBuilder<StatisticsCubit, StatisticsState>(
+                          builder: (context, statsState) {
+                            final dueMedicines = state.medicines
+                                .where((m) => m.isDueOn(selectedDate))
+                                .where(
+                                  (m) => !statsState.isHandledForDate(
+                                    m.id,
                                     selectedDate,
                                   ),
-                            )
-                            .toList();
+                                )
+                                .toList();
 
-                        if (dueMedicines.isEmpty) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            child: const Center(
-                              child: EmptyState(
-                                title: 'No medicines for this date',
-                              ),
-                            ),
-                          );
-                        }
+                            if (dueMedicines.isEmpty) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                child: const Center(
+                                  child: EmptyState(
+                                    title: 'No medicines for this date',
+                                  ),
+                                ),
+                              );
+                            }
 
-                        return Column(
-                          children: dueMedicines.map((medicine) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 18),
-                              child: MedicineCard(
-                                medicine: medicine,
-                                showCompleteAction: isToday,
-                                enableDelete: false,
-                                onEdit: () {
-                                  _openCreateEditMedicine(
-                                    context,
+                            return Column(
+                              children: dueMedicines.map((medicine) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 18),
+                                  child: MedicineCard(
                                     medicine: medicine,
-                                  );
-                                },
-                                onComplete: () {
-                                  context
-                                      .read<MedicineCubit>()
-                                      .markCompletedForDate(
-                                        medicine.id,
-                                        selectedDate,
+                                    showCompleteAction: isToday,
+                                    enableDelete: false,
+                                    onEdit: () {
+                                      _openCreateEditMedicine(
+                                        context,
+                                        medicine: medicine,
                                       );
-
-                                  context.read<StatisticsCubit>().record(
+                                    },
+                                    onComplete: () {
+                                      context.read<StatisticsCubit>().record(
                                         medicineId: medicine.id,
                                         medicineType: medicine.type,
                                         dosageAmount: medicine.dosageAmount,
@@ -145,17 +140,10 @@ class Home extends StatelessWidget {
                                         date: selectedDate,
                                       );
 
-                                  GlobalToast.show('Medicine Completed');
-                                },
-                                onSkip: () {
-                                  context
-                                      .read<MedicineCubit>()
-                                      .markSkippedForDate(
-                                        medicine.id,
-                                        selectedDate,
-                                      );
-
-                                  context.read<StatisticsCubit>().record(
+                                      GlobalToast.show('Medicine Completed');
+                                    },
+                                    onSkip: () {
+                                      context.read<StatisticsCubit>().record(
                                         medicineId: medicine.id,
                                         medicineType: medicine.type,
                                         dosageAmount: medicine.dosageAmount,
@@ -163,14 +151,16 @@ class Home extends StatelessWidget {
                                         date: selectedDate,
                                       );
 
-                                  GlobalToast.show(
-                                    'Medicine Skipped',
-                                    isNegative: true,
-                                  );
-                                },
-                              ),
+                                      GlobalToast.show(
+                                        'Medicine Skipped',
+                                        isNegative: true,
+                                      );
+                                    },
+                                  ),
+                                );
+                              }).toList(),
                             );
-                          }).toList(),
+                          },
                         );
                       },
                     ),

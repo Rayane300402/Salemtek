@@ -2,7 +2,6 @@ class Achievements {
   static const String basePath = 'assets/imgs/';
   static const String achievementsPath = 'achievements';
 
-  // Type-specific — one per MedicineType.
   static const String pillKeeper =
       '$basePath$achievementsPath/pill_keeper.png';
   static const String capsuleGuardian =
@@ -25,6 +24,5 @@ class Achievements {
   static const String suppositorySentinel =
       '$basePath$achievementsPath/suppository_sentinel.png';
 
-  // General — secret, unlocked by medicine variety.
   static const String healer = '$basePath$achievementsPath/healer.png';
 }

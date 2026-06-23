@@ -1,31 +1,21 @@
 import '../../configs/assets/achievements.dart';
 import 'medicine_type.dart';
 
-/// How an achievement is unlocked.
 enum AchievementRule {
-  /// Number of completions for [Achievement.type] must exceed the threshold.
-  /// Counts completions (times taken), not dosage amount — taking 2 pills in
-  /// one go is still one completion.
   typeDoses,
 
-  /// The number of distinct medicine types the user has completed must be
-  /// greater than the threshold (e.g. Healer: more than 5 types).
   medicineVariety,
 }
 
-/// An achievement and the rule that unlocks it. Display [title] intentionally
-/// matches the asset filename so names never diverge.
 class Achievement {
   final String id;
   final String title;
 
-  /// The medicine type this rewards, or null for general achievements.
   final MedicineType? type;
   final String asset;
   final int threshold;
   final AchievementRule rule;
 
-  /// Secret achievements stay hidden in the UI until they are unlocked.
   final bool secret;
 
   const Achievement({
@@ -38,7 +28,6 @@ class Achievement {
     this.secret = false,
   });
 
-  /// Every achievement we ship — one per MedicineType plus the secret Healer.
   static const List<Achievement> catalog = [
     Achievement(
       id: 'pill_keeper',
@@ -129,10 +118,6 @@ class Achievement {
   ];
 }
 
-/// An achievement paired with the user's current progress value.
-///
-/// [value] is doses-of-type for [AchievementRule.typeDoses] and distinct
-/// completed types for [AchievementRule.medicineVariety].
 class AchievementProgress {
   final Achievement achievement;
   final int value;
@@ -142,7 +127,6 @@ class AchievementProgress {
     required this.value,
   });
 
-  // Both rules unlock at "more than threshold".
   bool get isUnlocked => value > achievement.threshold;
 
   double get progress {

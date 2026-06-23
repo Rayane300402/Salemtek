@@ -85,8 +85,6 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     await load();
   }
 
-  /// Records a single medicine action (completed / skipped) and recomputes.
-  /// Idempotent per medicine + date + action (see datasource).
   Future<void> record({
     required String medicineId,
     required MedicineType medicineType,
@@ -138,7 +136,6 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
     final streak = _calculateStreak(filtered);
 
-    // Action-based consistency: completed out of completed + skipped.
     final consistency = completionRate;
 
     final chartData = _computeChartData(
@@ -147,8 +144,12 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       selectedDate: selectedDate,
     );
 
-    // Achievements are cumulative (lifetime), so they ignore the filters.
     final achievements = _computeAchievements(statistics);
+
+    final handledKeys = <String>{
+      for (final s in statistics)
+        StatisticsState.handledKey(s.medicineId, s.actionDate),
+    };
 
     return StatisticsState(
       status: StatisticsStatus.success,
@@ -164,6 +165,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       consistency: consistency,
       chartData: chartData,
       achievements: achievements,
+      handledKeys: handledKeys,
     );
   }
 
@@ -222,8 +224,6 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     return streak;
   }
 
-  /// Builds one line per medicine of completed doses, bucketed by the active
-  /// time filter (month -> days, year -> months, lifetime -> years).
   StatChartData _computeChartData({
     required List<MedicineStatistic> filtered,
     required StatisticsTimeFilterType timeFilterType,

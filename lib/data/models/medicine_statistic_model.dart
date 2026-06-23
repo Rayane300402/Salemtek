@@ -45,29 +45,31 @@ class MedicineStatisticModel {
     );
   }
 
-  factory MedicineStatisticModel.fromJson(Map<String, dynamic> json) {
+  factory MedicineStatisticModel.fromMap(Map<String, Object?> map) {
     return MedicineStatisticModel(
-      id: json['id'] as String,
-      medicineId: json['medicineId'] as String,
-      medicineType: MedicineType.values.byName(json['medicineType'] as String),
-      dosageAmount: json['dosageAmount'] as int,
+      id: map['id'] as String,
+      medicineId: map['medicineId'] as String,
+      medicineType: MedicineType.values.byName(map['medicineType'] as String),
+      dosageAmount: map['dosageAmount'] as int,
       actionType: StatisticActionType.values.byName(
-        json['actionType'] as String,
+        map['actionType'] as String,
       ),
-      actionDate: DateTime.parse(json['actionDate'] as String),
-      dateCreated: DateTime.parse(json['dateCreated'] as String),
+      actionDate: DateTime.fromMillisecondsSinceEpoch(map['actionDate'] as int),
+      dateCreated: DateTime.fromMillisecondsSinceEpoch(
+        map['dateCreated'] as int,
+      ),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toMap() {
     return {
       'id': id,
       'medicineId': medicineId,
       'medicineType': medicineType.name,
       'dosageAmount': dosageAmount,
       'actionType': actionType.name,
-      'actionDate': actionDate.toIso8601String(),
-      'dateCreated': dateCreated.toIso8601String(),
+      'actionDate': actionDate.millisecondsSinceEpoch,
+      'dateCreated': dateCreated.millisecondsSinceEpoch,
     };
   }
 }

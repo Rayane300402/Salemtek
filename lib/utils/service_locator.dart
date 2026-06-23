@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:salemtek/ui/pages/introduction/bloc/introduction_cubit.dart';
+import 'package:sqflite/sqflite.dart';
 
+import '../data/local/app_database.dart';
+import '../data/local/dev_seeder.dart';
 import '../data/repo/medicine_repository_impl.dart' show MedicineRepositoryImpl;
 import '../data/repo/settings_repo_impl.dart';
 import '../data/repo/statistics_repository_impl.dart';
@@ -19,53 +22,53 @@ import '../ui/bloc/statistics/statistics_cubit.dart' show StatisticsCubit;
 
 final sl = GetIt.instance;
 
+const bool kSeedDevData = false;
+
 Future<void> initServiceLocator() async {
   sl.registerLazySingleton<IntroductionCubit>(() => IntroductionCubit());
 
+  final appDb = AppDatabase();
+  final db = await appDb.database;
+  sl.registerSingleton<Database>(db);
+
+  if (kSeedDevData && appDb.justCreated) {
+    await DevSeeder.seed(db);
+  }
+
   sl.registerLazySingleton<MedicineLocalDataSource>(
-        () => MedicineLocalDataSourceImpl(),
+    () => MedicineLocalDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<MedicineRepository>(
-        () => MedicineRepositoryImpl(sl()),
+    () => MedicineRepositoryImpl(sl()),
   );
 
   sl.registerLazySingleton(() => MedicineUseCases(sl()));
 
-  sl.registerLazySingleton<MedicineCubit>(
-        () => MedicineCubit(sl())..load(),
-  );
+  sl.registerLazySingleton<MedicineCubit>(() => MedicineCubit(sl())..load());
 
   sl.registerLazySingleton<StatisticsLocalDataSource>(
-        () => StatisticsLocalDataSourceImpl(),
+    () => StatisticsLocalDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<StatisticsRepository>(
-        () => StatisticsRepositoryImpl(sl()),
+    () => StatisticsRepositoryImpl(sl()),
   );
 
-  sl.registerLazySingleton<StatisticsUseCases>(
-        () => StatisticsUseCases(sl()),
-  );
+  sl.registerLazySingleton<StatisticsUseCases>(() => StatisticsUseCases(sl()));
 
   sl.registerLazySingleton<SettingsLocalDataSource>(
-        () => SettingsLocalDataSourceImpl(),
+    () => SettingsLocalDataSourceImpl(sl()),
   );
 
-  sl.registerLazySingleton<StatisticsCubit>(
-        () => StatisticsCubit(sl())..load(),
-  );
+  sl.registerLazySingleton<StatisticsCubit>(() => StatisticsCubit(sl())..load());
 
-  sl.registerLazySingleton<SettingsRepo>(
-        () => SettingsRepoImpl(sl()),
-  );
+  sl.registerLazySingleton<SettingsRepo>(() => SettingsRepoImpl(sl()));
 
-  sl.registerLazySingleton<SettingsUseCases>(
-        () => SettingsUseCases(sl()),
-  );
+  sl.registerLazySingleton<SettingsUseCases>(() => SettingsUseCases(sl()));
 
   sl.registerFactory<SettingsCubit>(
-        () => SettingsCubit(
+    () => SettingsCubit(
       settingsUseCases: sl(),
       medicineRepo: sl(),
       medicineCubit: sl<MedicineCubit>(),
@@ -73,6 +76,4 @@ Future<void> initServiceLocator() async {
       statisticsCubit: sl<StatisticsCubit>(),
     )..load(),
   );
-
-
 }

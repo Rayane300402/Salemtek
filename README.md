@@ -49,8 +49,7 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] Added `SettingsRepoImpl`
     - connects settings datasource to domain repo
   - [x] Added `SettingsLocalDataSource`
-    - uses in-memory local data for now
-    - emulates future SQLite single-row settings table
+    - backed by a single-row SQLite `settings` table
   - [x] Added `SettingsUseCases`
     - grouped settings actions into one usecase file
   - [x] Added `SettingsCubit` + `SettingsState`
@@ -119,14 +118,38 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] Settings hard reset reloads `MedicineCubit`
   - [x] keeps UI in sync after data actions
 
-- [x] Planned future DB shape for Settings
+- [x] Settings persisted in SQLite
   - [x] one local `settings` table
-  - [x] single-row settings design
-  - [x] intended columns:
-    - `notifications_enabled`
-    - `excessive_reminders_enabled`
-    - `excessive_reminder_minutes`
-    - `updated_at`
+  - [x] single-row design (`id = 0`)
+  - [x] columns:
+    - `notificationsEnabled`
+    - `excessiveRemindersEnabled`
+    - `excessiveReminderMinutes`
+
+- [x] Local Database (SQLite)
+  - [x] Switched persistence from in-memory / JSON to a real on-device SQLite database
+  - [x] `sqflite` on mobile + `sqflite_common_ffi` for Windows/desktop dev
+  - [x] One shared connection opened once at startup (`salemtek.db`)
+  - [x] Clean `lib/data/local/` layer
+    - `app_database.dart` — open, version, `onCreate`, `onUpgrade`
+    - `database_schema.dart` — table names + `CREATE TABLE` / index statements
+    - `migrations.dart` — append-only, versioned migrations
+    - `dev_seeder.dart` — dev-only dummy data, behind `kSeedDevData`
+  - [x] Tables (typed columns: dates as epoch millis, bools as 0/1, enums as text)
+    - `medicines`
+    - `statistics`
+    - `settings` (single row)
+  - [x] Indexes for fast loads
+    - `medicines.dateDeleted`
+    - `statistics.actionDate`
+    - `statistics.medicineId`
+  - [x] Only the 3 datasource impls changed — repos / usecases / cubits / UI untouched
+  - [x] Models map via `toMap` / `fromMap` (replaced `toJson` / `fromJson`)
+  - [x] Idempotent statistics via `INSERT OR REPLACE` on the composite id
+  - [x] Starts empty in production; flip `kSeedDevData` for a populated demo history
+  - [x] "Handled today" derives from the statistics table (single source of truth)
+  - [ ] Add a feature later: bump `AppDatabase` version + append a `kMigrations` entry
+  - [ ] Future: foreign keys / cascade, push stat filters into SQL, statistics export
 
 - [x] Set up Drug Cabinet
   - [x] same card as home
@@ -302,7 +325,7 @@ Will provide a web view to see its full design without needing to set up here:
 
   - [x] Domain layer
     - [x] Create `MedicineStatistic` entity
-    - [x] Create model with JSON / SQLite support
+    - [x] Create model with SQLite (`toMap` / `fromMap`) support
     - [x] Create statistics repository
     - [x] Create statistics use cases
 
@@ -417,6 +440,7 @@ Will provide a web view to see its full design without needing to set up here:
         - [x] Create statistic entry from Home page interactions
         - [x] Refresh statistics automatically after action
         - [x] Prevent duplicate records for same medicine/date/action
+        - [x] Home hides a medicine once handled — derived from the statistics table (survives restart)
         - [ ] Future:
           - [ ] allow editing action status
           - [ ] allow removing mistaken records

@@ -7,8 +7,6 @@ import '../../../../../domain/entities/medicine_type.dart';
 import '../../../../bloc/statistics/statistics_chart_data.dart';
 import '../../../../bloc/statistics/statistics_state.dart';
 
-/// Line chart of completed doses over time — one line per medicine, bucketed by
-/// the active time filter (month -> days, year -> months, lifetime -> years).
 class ProgressChart extends StatelessWidget {
   final StatChartData data;
   final List<Medicine> medicines;
@@ -36,7 +34,6 @@ class ProgressChart extends StatelessWidget {
     return byId[series.medicineId]?.title ?? series.medicineType.label;
   }
 
-  // How many x-axis labels to skip so the axis doesn't get crowded.
   int _bottomStep() {
     switch (timeFilterType) {
       case StatisticsTimeFilterType.month:

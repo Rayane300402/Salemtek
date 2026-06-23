@@ -34,6 +34,8 @@ class StatisticsState {
   final StatChartData chartData;
   final List<AchievementProgress> achievements;
 
+  final Set<String> handledKeys;
+
   final String? errorMessage;
 
   const StatisticsState({
@@ -50,15 +52,22 @@ class StatisticsState {
     required this.consistency,
     required this.chartData,
     required this.achievements,
+    required this.handledKeys,
     this.errorMessage,
   });
 
-  /// True when there are no recorded statistics at all.
   bool get hasNoData => statistics.isEmpty;
 
-  /// True when statistics exist but none match the active filters.
   bool get hasNoDataForFilter =>
       statistics.isNotEmpty && filteredStatistics.isEmpty;
+
+  static String handledKey(String medicineId, DateTime date) {
+    return '${medicineId}_${date.year}-${date.month}-${date.day}';
+  }
+
+  bool isHandledForDate(String medicineId, DateTime date) {
+    return handledKeys.contains(handledKey(medicineId, date));
+  }
 
   factory StatisticsState.initial() {
     final now = DateTime.now();
@@ -77,6 +86,7 @@ class StatisticsState {
       consistency: 0,
       chartData: StatChartData.empty(),
       achievements: const [],
+      handledKeys: const {},
       errorMessage: null,
     );
   }
@@ -95,6 +105,7 @@ class StatisticsState {
     double? consistency,
     StatChartData? chartData,
     List<AchievementProgress>? achievements,
+    Set<String>? handledKeys,
     String? errorMessage,
     bool clearMedicineTypeFilter = false,
     bool clearError = false,
@@ -115,6 +126,7 @@ class StatisticsState {
       consistency: consistency ?? this.consistency,
       chartData: chartData ?? this.chartData,
       achievements: achievements ?? this.achievements,
+      handledKeys: handledKeys ?? this.handledKeys,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
     );
   }
