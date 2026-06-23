@@ -3,7 +3,6 @@ import 'package:salemtek/ui/pages/introduction/bloc/introduction_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../data/local/app_database.dart';
-import '../data/local/dev_seeder.dart';
 import '../data/repo/medicine_repository_impl.dart' show MedicineRepositoryImpl;
 import '../data/repo/settings_repo_impl.dart';
 import '../data/repo/statistics_repository_impl.dart';
@@ -22,18 +21,11 @@ import '../ui/bloc/statistics/statistics_cubit.dart' show StatisticsCubit;
 
 final sl = GetIt.instance;
 
-const bool kSeedDevData = false;
-
 Future<void> initServiceLocator() async {
   sl.registerLazySingleton<IntroductionCubit>(() => IntroductionCubit());
 
-  final appDb = AppDatabase();
-  final db = await appDb.database;
+  final db = await AppDatabase().database;
   sl.registerSingleton<Database>(db);
-
-  if (kSeedDevData && appDb.justCreated) {
-    await DevSeeder.seed(db);
-  }
 
   sl.registerLazySingleton<MedicineLocalDataSource>(
     () => MedicineLocalDataSourceImpl(sl()),

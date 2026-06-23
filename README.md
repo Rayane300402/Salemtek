@@ -86,8 +86,8 @@ Will provide a web view to see its full design without needing to set up here:
     - reloads medicine cubit so UI updates immediately
   - [x] Hard Reset
     - permanently deletes all medicines
+    - clears all statistics
     - resets settings to defaults
-    - designed to later clear stats too
     - added confirmation dialog before running
 
 - [x] Added Notification section
@@ -134,7 +134,6 @@ Will provide a web view to see its full design without needing to set up here:
     - `app_database.dart` — open, version, `onCreate`, `onUpgrade`
     - `database_schema.dart` — table names + `CREATE TABLE` / index statements
     - `migrations.dart` — append-only, versioned migrations
-    - `dev_seeder.dart` — dev-only dummy data, behind `kSeedDevData`
   - [x] Tables (typed columns: dates as epoch millis, bools as 0/1, enums as text)
     - `medicines`
     - `statistics`
@@ -146,7 +145,7 @@ Will provide a web view to see its full design without needing to set up here:
   - [x] Only the 3 datasource impls changed — repos / usecases / cubits / UI untouched
   - [x] Models map via `toMap` / `fromMap` (replaced `toJson` / `fromJson`)
   - [x] Idempotent statistics via `INSERT OR REPLACE` on the composite id
-  - [x] Starts empty in production; flip `kSeedDevData` for a populated demo history
+  - [x] Starts empty — no demo or dummy data; the app begins blank as intended
   - [x] "Handled today" derives from the statistics table (single source of truth)
   - [ ] Add a feature later: bump `AppDatabase` version + append a `kMigrations` entry
   - [ ] Future: foreign keys / cascade, push stat filters into SQL, statistics export

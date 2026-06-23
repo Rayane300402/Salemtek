@@ -10,7 +10,6 @@ class AppDatabase {
   static const _version = 1;
 
   Database? _db;
-  bool justCreated = false;
 
   Future<Database> get database async {
     return _db ??= await _open();
@@ -27,7 +26,6 @@ class AppDatabase {
         await db.execute('PRAGMA foreign_keys = ON;');
       },
       onCreate: (db, version) async {
-        justCreated = true;
         final batch = db.batch();
         for (final statement in createSchemaStatements) {
           batch.execute(statement);
