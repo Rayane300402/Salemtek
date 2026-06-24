@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
       children: [
         CustomHeader(
           title: 'Your\nDrug Schedule',
-          onPressed: () {},
+          onPressed: () => GlobalToast.show('Notifications coming soon'),
           icon: Icons.notifications_active,
         ),
         const SizedBox(height: 20),
