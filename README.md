@@ -1,12 +1,186 @@
 # Salemtek
 
-A Pill Reminder App
+A medication reminder and adherence-tracking app built with Flutter. Track what you take, when you take it, and how consistently you actually take it — offline-first, no account, no server.
 
-## Getting Started
+Built solo: product design, UI/UX, architecture, and implementation.
 
-Will provide a web view to see its full design without needing to set up here: 
+> **Status:** in active development. Scheduling, persistence, statistics, and achievements work end to end. Notification *delivery* is modelled and configurable but not yet wired to the OS — see [Roadmap](#roadmap).
 
-## Checklist
+---
+
+## Screenshots
+
+| Home | Cabinet | Create / Edit |
+|:---:|:---:|:---:|
+| ![Home](docs/screenshots/home.png) | ![Cabinet](docs/screenshots/cabinet.png) | ![Create](docs/screenshots/create.png) |
+
+| Statistics | Settings |
+|:---:|:---:|
+| ![Statistics](docs/screenshots/stats.png) | ![Settings](docs/screenshots/settings.png) |
+
+---
+
+## Features
+
+**Home — daily schedule**
+- Horizontal date strip with the selected day emphasised
+- "Today's Reminder" list showing only what is actually due on that date
+- Swipe a card right to reveal delete, left to reveal edit or mark-as-taken; an extended swipe commits the action directly
+- Every action available from a three-dot menu too, for users who would rather tap than swipe
+- Once a medication is handled, it disappears for that day — derived from the statistics table, so it survives a restart
+
+**Cabinet**
+- Full medication list with search across name, type, and dosage text
+- 11 medication types — pill, capsule, cream, injection, bandage, IV drip, drops, inhaler, liquid, powder, suppository — each with its own illustrated asset
+- Soft delete with restore, so removing a medication never destroys its adherence history
+
+**Create / edit**
+- One screen handles both modes, driven by an optional `Medicine?`
+- Horizontal type carousel where the centred selection drives the artwork throughout the form
+- Dosage phrasing adapts to the type: *1 pill / 2 pills*, *1 puff / 2 puffs*, *apply once / apply twice*, *1 sachet / 2 sachets*
+- Reminder builder covering every day, every _n_ days, every week, every _n_ weeks, every month, every _n_ months — the custom interval field appears only for the options that need it, and rejects zero and negative values
+- Required start date, optional end date; an empty end date means an ongoing medication
+
+**Statistics**
+- Filter by medication and by period — a specific month, a full year, or lifetime; only months that actually contain data are listed
+- **Streak**: consecutive days with at least one completed dose
+- **Consistency**: completed ÷ (completed + skipped), stated as action-based rather than schedule-based, which is a deliberate simplification (see the build log)
+- Completion ring plus an `fl_chart` line chart whose X-axis rebuckets by day, month, or year to match the selected period
+- Achievements: 12-entry catalog across two rules — 20+ doses of a given type, and variety across 5+ distinct types. Locked achievements are hidden entirely rather than greyed out, so the full set stays a surprise
+
+**Settings**
+- **Data**: restore every soft-deleted medication, or hard reset — which wipes medications, statistics, and preferences behind a confirmation dialog
+- **Notification**: master toggle, excessive-reminder toggle, and a repeat interval in minutes; all persisted, pending OS delivery
+- Animated in-page navigation between the root and each subsection
+
+**Onboarding**
+- Paged introduction flow with its own scoped cubit, shown once and then never again
+
+---
+
+## Architecture
+
+Clean Architecture. Dependencies point inward: `ui` depends on `domain`, `data` depends on `domain`, and `domain` depends on nothing — not on Flutter, not on `sqflite`.
+
+```
+lib/
+├── domain/                  # Pure Dart. No Flutter, no sqflite, no I/O.
+│   ├── entities/            # Medicine, Reminder, Settings, Achievement, MedicineStatistic
+│   ├── repo/                # Repository contracts (abstract)
+│   └── usecases/            # MedicineUseCases, StatisticsUseCases, SettingsUseCases
+│
+├── data/                    # Implements the domain contracts.
+│   ├── local/               # app_database, database_schema, migrations
+│   ├── sources/             # Local data sources (sqflite)
+│   ├── repo/                # Repository implementations
+│   └── models/              # Row <-> entity mapping
+│
+├── ui/
+│   ├── bloc/                # Cubits: medicine, settings, statistics
+│   ├── components/          # Reusable widgets (button, header, nav bar, card, toast, empty state)
+│   └── pages/               # introduction/, main/{home, cabinet, create_edit, statistics, settings}
+│
+├── configs/                 # Theme, palette, asset catalogs
+└── utils/                   # Service locator
+```
+
+**The layering paid for itself.** Persistence originally ran on in-memory/JSON storage and was later migrated to on-device SQLite. That migration touched **only the three data source implementations** — every repository, use case, cubit, and widget was left untouched, because none of them had ever known where the data came from. Swapping SQLite for a remote API, or adding a sync layer, is the same shape of change: one new implementation of an existing contract, one changed registration line.
+
+### State management
+
+`flutter_bloc` with **Cubits** rather than full BLoCs — the interactions here are direct method calls, with no meaningful event streams to model.
+
+| Cubit | Owns |
+|---|---|
+| `MedicineCubit` | the cabinet, CRUD, soft delete, restore |
+| `StatisticsCubit` | dose history, filters, summary values, chart data, achievements |
+| `SettingsCubit` | preferences, data actions, visible settings section |
+| `IntroductionCubit` | onboarding page state |
+| `CalendarLoadCubit` | scoped to the home calendar |
+
+Four are provided at the root via `MultiBlocProvider`; the calendar's is scoped locally. `hydrated_bloc` persists cubit state across launches.
+
+`SettingsCubit` deliberately depends on the medicine repository and `MedicineCubit` as well as its own use cases — a restore or hard reset has to reload medication state so the UI stays truthful immediately after the action.
+
+### Dependency injection
+
+`get_it`, initialised in `initServiceLocator()` before `runApp`. The database is opened once and registered as a singleton; data sources, repositories, use cases, and cubits register as lazy singletons so nothing is constructed until first use.
+
+### Scheduling
+
+Due-date resolution lives in `Medicine.isDueOn` — a pure function on the entity, with no I/O and no framework dependency. It handles all four recurrence units, including the fiddly cases: weekly recurrence checks both weekday match and week index, monthly checks day-of-month, yearly checks month and day. Being pure makes the hardest logic in the app the most directly unit-testable part of it.
+
+### Persistence
+
+`sqflite` on mobile, `sqflite_common_ffi` for desktop, initialised conditionally in `main()`. One shared connection to `salemtek.db`, opened at startup.
+
+The local layer is split three ways:
+
+- `app_database.dart` — open, version, `onCreate`, `onUpgrade`
+- `database_schema.dart` — table and index statements
+- `migrations.dart` — an append-only versioned map, plus a runner that replays every step between `oldVersion` and `newVersion` inside a single batch
+
+Three tables — `medicines`, `statistics`, and a single-row `settings` — with typed columns throughout: dates as epoch milliseconds, booleans as `0`/`1`, enums as text. Indexed on `medicines.dateDeleted`, `statistics.actionDate`, and `statistics.medicineId`. Statistics writes are idempotent via `INSERT OR REPLACE` on a composite id, so recording the same medication/date/action twice cannot corrupt the history.
+
+The app starts genuinely empty. No seed data, no demo rows.
+
+---
+
+## Tech stack
+
+| Area | Choice |
+|---|---|
+| Framework | Flutter, Dart |
+| State management | `flutter_bloc` (Cubit), `hydrated_bloc` |
+| Dependency injection | `get_it` |
+| Local database | `sqflite`, `sqflite_common_ffi` (desktop) |
+| Charts | `fl_chart` |
+| Assets & formatting | `flutter_svg`, `intl` |
+| Storage paths | `path_provider`, `path` |
+| Lints | `flutter_lints` |
+
+---
+
+## Getting started
+
+```bash
+flutter pub get
+flutter run
+```
+
+Runs on Android, iOS, web, Windows, macOS, and Linux. No API keys, no backend, no configuration — all data is local.
+
+---
+
+## Roadmap
+
+- [ ] Wire local notification delivery — the model, per-medication reminder config, and settings all exist; OS scheduling does not
+- [ ] Scheduled-dose adherence: compute *expected* doses from start/end date and reminder interval, so consistency becomes true adherence rather than completed ÷ actions
+- [ ] Test coverage, starting with `Medicine.isDueOn` across all four recurrence units
+- [ ] Splash screen
+- [ ] Web preview build, so the UI can be reviewed without a local toolchain
+- [ ] Statistics export and shareable achievements
+- [ ] Card animation polish; animated percentage on the progress ring
+- [ ] Foreign keys and cascade; push statistics filtering down into SQL
+- [ ] Multi-tier achievement thresholds (10 / 50 / 100) and streak-based achievements
+- [ ] Editing and removing mistaken statistic records
+- [ ] Localisation
+
+---
+
+## Build log
+
+The full development checklist is kept below, unedited. It is not a to-do list so much as a running record of how the app was reasoned about — which tradeoffs were taken deliberately, what was deferred and why, and what each architectural decision cost or saved.
+
+A few threads worth following if you're reading it as a work sample:
+
+- **The SQLite migration** — note the line *"Only the 3 datasource impls changed — repos / usecases / cubits / UI untouched."* That is the layering being tested in anger.
+- **Action-based vs scheduled-based consistency** — a simpler metric shipped first, with the more correct one specified in full and deferred rather than hand-waved.
+- **Dosage as a structured field** — flagged early as "should probably become structured, not only string," before it became painful.
+- **Statistics idempotency** — duplicate-prevention was designed in at the schema level, not patched later.
+
+<details>
+<summary><strong>Full checklist</strong></summary>
 
 - [x] Build Model for medicine
   - [x] Image (from assets)
@@ -295,7 +469,7 @@ Will provide a web view to see its full design without needing to set up here:
     - [x] notification can stay structured using reminder unit/every value
     - [ ] dosage history may be needed later for accurate stats
     - [ ] completion/stats should eventually store exact dosage taken at that time
-  
+
   - [x] Medicine Details View
     - [x] Open from three-dot menu
     - [x] Bottom sheet with rounded top corners
@@ -460,3 +634,5 @@ Will provide a web view to see its full design without needing to set up here:
       - [ ] Weekly reports
       - [ ] Monthly reports
       - [ ] Personalized insights
+
+</details>
